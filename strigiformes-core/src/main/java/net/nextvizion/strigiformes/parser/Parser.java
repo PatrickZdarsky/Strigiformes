@@ -10,6 +10,7 @@ import net.nextvizion.strigiformes.parser.token.ColorToken;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
 import net.nextvizion.strigiformes.parser.token.VariableToken;
 import net.nextvizion.strigiformes.text.ColoredText;
+import net.nextvizion.strigiformes.text.TextFormat;
 
 import java.awt.Color;
 import java.util.Iterator;
@@ -73,7 +74,9 @@ public class Parser {
             String tokenString = input.substring(baseToken.getIndex(), baseToken.getEnd()+1);
 
             /*
-                §f§kasdsads §6asdsad §{grey}Server
+                §2asdas§kasdsads §6asdsad §{grey}Server
+
+
              */
             if (baseToken instanceof ColorToken) {
                 if (coloredText != null) {
@@ -82,7 +85,6 @@ public class Parser {
                     if (color == null) {
 
                     }
-
                 }
 
 

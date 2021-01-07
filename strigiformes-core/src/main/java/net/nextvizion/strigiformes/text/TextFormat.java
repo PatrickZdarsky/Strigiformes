@@ -20,7 +20,7 @@ public enum TextFormat {
         this.code = code;
     }
 
-    public TextFormat getFormatByCode(String code) {
+    public static TextFormat getFormatByCode(String code) {
         for (TextFormat textFormat : values())
             if (textFormat.getCode().equalsIgnoreCase(code))
                 return textFormat;

@@ -30,10 +30,12 @@ public class ColoredText {
         this.text = text;
     }
 
-    public void addFormat(TextFormat textFormat) {
+    public ColoredText addFormat(TextFormat textFormat) {
         if (formats == null)
             formats = new ArrayList<>(2);
         if (!formats.contains(textFormat))
             formats.add(textFormat);
+
+        return this;
     }
 }
