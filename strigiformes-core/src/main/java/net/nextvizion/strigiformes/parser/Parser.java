@@ -58,35 +58,23 @@ public class Parser {
                 .filter(baseToken -> (baseToken instanceof ComponentToken))
                 .collect(Collectors.toList());
 
-
-        //Check if the first token is not at the beginning
-        if (tokens.isEmpty() || tokens.get(0).getIndex() > 0) {
-            //This text does not have a color or anything associated
-            String part = input.substring(0, tokens.get(0).getIndex());
-            System.out.println("Initial Part: \""+part+"\" index= "+tokens.get(0).getIndex());
-
-            message.getComponents().add(ChatComponent.parse(part));
-            index = tokens.get(0).getIndex();
-        }
-
         for (BaseToken baseToken : tokens) {
+            //Parse text in front of component
             if (baseToken.getIndex() > index) {
                 String part = input.substring(index, baseToken.getIndex());
 
                 message.getComponents().add(ChatComponent.parse(part));
-                System.out.println("Message Part: \""+part+"\" from= "+index+" to= "+baseToken.getIndex());
             }
+            //Parse component
             String part = input.substring(baseToken.getIndex(), baseToken.getEnd());
             message.getComponents().add(ChatComponent.parse(part));
 
             index = baseToken.getEnd();
-            System.out.println("Component Part: \""+part+"\" from= "+baseToken.getIndex()+" to= "+baseToken.getEnd());
         }
 
-        //Check if we are at the end of the input if not parse it
+        //Check if we are at the end of the input, if not -> parse it
         if (index < input.length()-1) {
             String part = input.substring(index, input.length()-1);
-
 
             message.getComponents().add(ChatComponent.parse(part));
             System.out.println("End Part: \""+part+"\" from= "+index);
