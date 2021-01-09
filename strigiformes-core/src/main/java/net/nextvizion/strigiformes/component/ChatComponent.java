@@ -21,4 +21,12 @@ public class ChatComponent {
     private boolean generated;
 
 
+    /**
+     * This parse method can parse a single declared chatcomponent or a normal color-coded text
+     * @param input
+     * @return
+     */
+    public static ChatComponent parse(String input) {
+        return null;
+    }
 }

@@ -7,6 +7,7 @@ import net.nextvizion.strigiformes.color.ColorRegistry;
 import net.nextvizion.strigiformes.component.ChatComponent;
 import net.nextvizion.strigiformes.parser.token.BaseToken;
 import net.nextvizion.strigiformes.parser.token.ColorToken;
+import net.nextvizion.strigiformes.parser.token.ComponentToken;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
 import net.nextvizion.strigiformes.parser.token.VariableToken;
 import net.nextvizion.strigiformes.text.ColoredText;
@@ -49,63 +50,48 @@ public class Parser {
         var message = new Message();
         var tokenizer = new Tokenizer(input);
         tokenizer.tokenize();
+        //Position up to when we have parsed the input
+        int index = 0;
 
         // All tokens except VariableTokens since these should have been already resolved
         var tokens = tokenizer.getTokens().stream()
-                .filter(baseToken -> (!(baseToken instanceof VariableToken)))
+                .filter(baseToken -> (baseToken instanceof ComponentToken))
                 .collect(Collectors.toList());
 
 
         //Check if the first token is not at the beginning
-        if (tokens.get(0).getIndex() > 0) {
+        if (tokens.isEmpty() || tokens.get(0).getIndex() > 0) {
             //This text does not have a color or anything associated
             String part = input.substring(0, tokens.get(0).getIndex());
+            System.out.println("Initial Part: \""+part+"\" index= "+tokens.get(0).getIndex());
 
-
-            var chatComponent = new ChatComponent();
-            chatComponent.getTextList().add(new ColoredText(part));
+            message.getComponents().add(ChatComponent.parse(part));
+            index = tokens.get(0).getIndex();
         }
 
-        Iterator<BaseToken> tokenIterator = tokenizer.getTokens().iterator();
+        for (BaseToken baseToken : tokens) {
+            if (baseToken.getIndex() > index) {
+                String part = input.substring(index, baseToken.getIndex());
 
-        ColoredText coloredText = null;
-        while (tokenIterator.hasNext()) {
-            BaseToken baseToken = tokenIterator.next();
-            String tokenString = input.substring(baseToken.getIndex(), baseToken.getEnd()+1);
-
-            /*
-                §2asdas§kasdsads §6asdsad §{grey}Server
-
-
-             */
-            if (baseToken instanceof ColorToken) {
-                if (coloredText != null) {
-                    //Remove §
-                    Color color = ColorRegistry.parse(tokenString.substring(1));
-                    if (color == null) {
-
-                    }
-                }
-
-
-
-
+                message.getComponents().add(ChatComponent.parse(part));
+                System.out.println("Message Part: \""+part+"\" from= "+index+" to= "+baseToken.getIndex());
             }
+            String part = input.substring(baseToken.getIndex(), baseToken.getEnd());
+            message.getComponents().add(ChatComponent.parse(part));
 
-
-
-
-
+            index = baseToken.getEnd();
+            System.out.println("Component Part: \""+part+"\" from= "+baseToken.getIndex()+" to= "+baseToken.getEnd());
         }
 
+        //Check if we are at the end of the input if not parse it
+        if (index < input.length()-1) {
+            String part = input.substring(index, input.length()-1);
 
 
+            message.getComponents().add(ChatComponent.parse(part));
+            System.out.println("End Part: \""+part+"\" from= "+index);
+        }
 
-
-
-
-
-
-        return null;
+        return message;
     }
 }

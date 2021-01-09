@@ -1,6 +1,6 @@
 package net.nextvizion.strigiformes;
 
-import net.nextvizion.strigiformes.parser.token.Tokenizer;
+import net.nextvizion.strigiformes.parser.Parser;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -8,8 +8,8 @@ import net.nextvizion.strigiformes.parser.token.Tokenizer;
 public class Main {
 
     public static void main(String[] args) {
-        Tokenizer tokenizer = new Tokenizer("${cloud:sysPrefix}Du §7befindest §6dich auf §{grey}Server %{§{gold}Lobby-§{white}1|run_command:/server lobby1}");
-        tokenizer.tokenize();
+        Parser parser = new Parser("${cloud:sysPrefix}%{§cRxcki|run_command:/pi Rxcki} befindet sich auf §{grey}Server %{§{gold}Lobby-§{white}1|run_command:/server lobby1} mit 6 anderen Spielern!");
+        parser.parse();
     }
 
 

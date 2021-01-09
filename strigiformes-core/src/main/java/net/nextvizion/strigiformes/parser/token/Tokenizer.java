@@ -1,7 +1,6 @@
 package net.nextvizion.strigiformes.parser.token;
 
 import lombok.Getter;
-import net.nextvizion.strigiformes.parser.VariableTag;
 import net.nextvizion.strigiformes.exception.TokenizerException;
 
 import java.util.ArrayList;
@@ -12,9 +11,10 @@ import java.util.regex.Pattern;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
+//Todo: make this class static?
 public class Tokenizer {
 
-    public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-F]");
+    public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-Fk-oK-O]");
 
     private final String input;
     @Getter
@@ -28,18 +28,6 @@ public class Tokenizer {
 
     public void tokenize() {
         TOKEN_EXTRACTOR.matcher(input).results().forEach(matchResult -> tokenize(matchResult));
-
-
-
-
-
-        System.out.println("RESULT");
-        for (BaseToken baseToken : tokens) {
-            System.out.println(baseToken);
-            if (baseToken instanceof VariableToken) {
-                System.out.println(VariableTag.parse(input.substring(baseToken.getIndex(), baseToken.getEnd()+1)));
-            }
-        }
     }
 
     private void tokenize(MatchResult matchResult) {
@@ -49,9 +37,9 @@ public class Tokenizer {
             if (activeToken == null) {
                 throw new TokenizerException("Found closing bracket without opening one");
             }
-            activeToken.setEnd(matchResult.start());
+            activeToken.setEnd(matchResult.start()+1);
             activeToken = activeToken.getParent();
-
+        //Legacy color-code logic
         } else if (result.charAt(0) == '§'
                 && matchResult.group().length() == 2
                 && result.charAt(result.length()-1) != '{') {
