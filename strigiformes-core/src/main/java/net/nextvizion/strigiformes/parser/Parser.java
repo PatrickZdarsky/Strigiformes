@@ -3,18 +3,10 @@ package net.nextvizion.strigiformes.parser;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.nextvizion.strigiformes.Message;
-import net.nextvizion.strigiformes.color.ColorRegistry;
 import net.nextvizion.strigiformes.component.ChatComponent;
 import net.nextvizion.strigiformes.parser.token.BaseToken;
-import net.nextvizion.strigiformes.parser.token.ColorToken;
 import net.nextvizion.strigiformes.parser.token.ComponentToken;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
-import net.nextvizion.strigiformes.parser.token.VariableToken;
-import net.nextvizion.strigiformes.text.ColoredText;
-import net.nextvizion.strigiformes.text.TextFormat;
-
-import java.awt.Color;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
