@@ -15,7 +15,7 @@ public class TranslatedObjectCache<T> {
 
     private final Function<Locale, T> supplier;
 
-    private Map<Locale, T> cache = new HashMap<>(5);
+    private final Map<Locale, T> cache = new HashMap<>(5);
 
     public T get(Locale locale) {
         return cache.computeIfAbsent(locale, supplier);
