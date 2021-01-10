@@ -2,6 +2,8 @@ package net.nextvizion.strigiformes.text;
 
 import lombok.Getter;
 
+import javax.print.attribute.SupportedValuesAttribute;
+
 /**
  * @author Patrick Zdarsky / Rxcki
  */
@@ -12,6 +14,8 @@ public enum TextFormat {
     BOLD("l"),
     UNDERLINED("n"),
     OBFUSCATED("k");
+
+    public static final TextFormat[] VALUES = values();
 
     @Getter
     private final String code;
@@ -24,7 +28,7 @@ public enum TextFormat {
         //Parse simple legacy formatting code
         if (code.startsWith("§")) {
             code = code.substring(1); //Remove leading §
-            for (TextFormat textFormat : values())
+            for (TextFormat textFormat : VALUES)
                 if (textFormat.getCode().equalsIgnoreCase(code))
                     return textFormat;
             return null;

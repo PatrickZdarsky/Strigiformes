@@ -3,6 +3,7 @@ package net.nextvizion.strigiformes.text;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -46,5 +47,19 @@ public class ColoredText {
                 ", text='" + text + '\'' +
                 ", formats=" + formats +
                 '}';
+    }
+
+    public JSONObject toJson() {
+        var json = new JSONObject();
+        json.put("text", getText());
+        if (getColor() != null)
+            json.put("color", String.format("#%06x",
+                    getColor().getRGB() & 0x00FFFFFF));
+
+        if (getFormats() != null)
+            for (TextFormat textFormat : getFormats())
+                json.put(textFormat.name().toLowerCase(), true);
+
+        return json;
     }
 }

@@ -2,6 +2,7 @@ package net.nextvizion.strigiformes;
 
 import lombok.Getter;
 import net.nextvizion.strigiformes.component.ChatComponent;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,14 @@ public class Message {
 
     public Message() {
         components = new ArrayList<>();
+    }
+
+    public JSONArray toJson() {
+        var array = new JSONArray();
+        for (ChatComponent component : components)
+            array.putAll(component.toJson());
+
+        return array;
     }
 
     @Override

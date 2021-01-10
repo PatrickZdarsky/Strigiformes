@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
-public class ColorRegistry {
+public final class ColorRegistry {
 
     public static final Pattern HEX_PATTERN = Pattern.compile("#[0-9a-fA-F]{6}");
     private static Map<String, Color> colors = new HashMap<>();
