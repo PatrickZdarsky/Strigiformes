@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class GradientRegistry {
 
-    private static Map<String, GradientGenerator> gradientGenerators = new HashMap<>();
+    private static final Map<String, GradientGenerator> gradientGenerators = new HashMap<>();
 
     static {
         addGenerator("linear", new LinearRgbGradientGenerator());
