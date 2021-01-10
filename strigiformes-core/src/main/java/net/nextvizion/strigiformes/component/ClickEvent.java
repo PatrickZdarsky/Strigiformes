@@ -21,9 +21,15 @@ public class ClickEvent {
         RUN_COMMAND,
         SUGGEST_COMMAND,
         CHANGE_PAGE,
-        COPY_TO_CLIPBOARD,
-        SHOW_TEXT,
-        SHOW_ITEM,
-        SHOW_ENTITY
+        COPY_TO_CLIPBOARD;
+
+        public static final ClickAction[] VALUES = values();
+
+        public static ClickAction getAction(String name) {
+            for (ClickAction clickAction : VALUES)
+                if (clickAction.name().equalsIgnoreCase(name))
+                    return clickAction;
+            return null;
+        }
     }
 }

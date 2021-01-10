@@ -1,6 +1,6 @@
-package net.nextvizion.strigiformes.color.gradients;
+package net.nextvizion.strigiformes.color.gradients.generator;
 
-import net.nextvizion.strigiformes.color.GradientGenerator;
+import net.nextvizion.strigiformes.color.gradients.GradientGenerator;
 
 import java.awt.Color;
 import java.util.ArrayList;

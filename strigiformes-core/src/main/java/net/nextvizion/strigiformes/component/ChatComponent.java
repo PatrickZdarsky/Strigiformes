@@ -5,14 +5,15 @@ import lombok.Setter;
 import net.nextvizion.strigiformes.color.ColorRegistry;
 import net.nextvizion.strigiformes.parser.token.ColorToken;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
-import net.nextvizion.strigiformes.text.ColoredText;
-import net.nextvizion.strigiformes.text.GradientText;
-import net.nextvizion.strigiformes.text.TextFormat;
+import net.nextvizion.strigiformes.color.ColoredText;
+import net.nextvizion.strigiformes.color.gradients.GradientText;
+import net.nextvizion.strigiformes.color.TextFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +30,8 @@ public class ChatComponent {
     private boolean generated;
     @Getter
     private ClickEvent clickEvent;
+    @Getter
+    private HoverEvent hoverEvent;
 
 
     public ChatComponent click(ClickEvent clickEvent) {
@@ -41,6 +44,15 @@ public class ChatComponent {
         return this;
     }
 
+    public ChatComponent hover(HoverEvent hoverEvent) {
+        this.hoverEvent = hoverEvent;
+        return this;
+    }
+
+    protected void setTextList(List<ColoredText> list) {
+        this.textList = list;
+    }
+
     /**
      * This parse method can parse a single declared chatcomponent or a normal color-coded text
      * @param input
@@ -50,7 +62,7 @@ public class ChatComponent {
         ChatComponent chatComponent = new ChatComponent();
         if (!input.startsWith("%{")) {
             chatComponent.setGenerated(true);
-            parseString(input, chatComponent);
+            chatComponent.setTextList(parseString(input));
         } else {
             var innerPart = input.substring(2, input.length()-1);
             debug("Decoding declared component: "+innerPart);
@@ -58,28 +70,32 @@ public class ChatComponent {
             //Split by | but ignore | which are disabled by \
             //Todo: Precompile the pattern
             String[] split = innerPart.split("(?<!\\\\)\\|");
-            parseString(split[0], chatComponent);
+            chatComponent.setTextList(parseString(split[0]));
             if (split.length > 1) {
                 for (int i = 1; i < split.length; i++) {
                     var dottedSplit = split[i].split(":");
-                    var clickAction = ClickEvent.ClickAction.valueOf(dottedSplit[0].toUpperCase());
+                    var clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0].toUpperCase());
+                    debug(clickAction+"");
                     if (clickAction != null) {
                         chatComponent.click(clickAction, dottedSplit[1]);
                         continue;
                     }
-                    var hoverAction = HoverEvent.HoverAction.valueOf(dottedSplit[0].toUpperCase());
+                    var hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0].toUpperCase());
                     if (hoverAction != null) {
-
+                        HoverEvent hoverEvent = new HoverEvent(hoverAction);
+                        hoverEvent.setText(parseString(split[i].substring(dottedSplit[0].length()+1)));
+                        chatComponent.hover(hoverEvent);
                     }
                 }
             }
         }
 
-
         return chatComponent;
     }
 
-    private static void parseString(String input, ChatComponent chatComponent) {
+    private static List<ColoredText> parseString(String input) {
+        List<ColoredText> texts = new ArrayList<>();
+
         debug("Parsing \""+ input +"\"");
         //We are parsing a normal text
         var tokens = Tokenizer.tokenize(input).stream()
@@ -92,7 +108,7 @@ public class ChatComponent {
         if (tokens.size() == 0 || tokens.get(0).getIndex() > 0) {
             //Todo: Maybe insert the color from the last ChatComponent?
             int end = tokens.size() > 0 ? tokens.get(0).getIndex() : input.length();
-            chatComponent.getTextList().add(
+            texts.add(
                     new ColoredText(input.substring(0, end)));
             index = end;
             debug("  Added beginning text up to "+index +" text=\""+ input.substring(0, end)+"\"");
@@ -111,10 +127,10 @@ public class ChatComponent {
                     debug("   Current is null");
                     currentText = new ColoredText();
                     currentText.addFormat(format);
-                    if (chatComponent.getTextList().size() > 0) {
+                    if (texts.size() > 0) {
                         debug("    Last is available");
                         //Set color and format from previous
-                        var prevText = chatComponent.getTextList().get(chatComponent.getTextList().size() - 1);
+                        var prevText = texts.get(texts.size() - 1);
                         currentText.setColor(prevText.getColor());
                         if (prevText.getFormats() != null)
                             for (TextFormat textFormat : prevText.getFormats())
@@ -139,7 +155,7 @@ public class ChatComponent {
                     } else {
                         var text = input.substring(index, colorToken.getIndex());
                         currentText.setText(text);
-                        chatComponent.getTextList().add(currentText);
+                        texts.add(currentText);
 
                         var newCurr = new ColoredText();
                         newCurr.addFormat(format);
@@ -171,7 +187,7 @@ public class ChatComponent {
                             ((GradientText) currentText).setEndColor(currColor);
                         }
                         currentText.setText(input.substring(index, colorToken.getIndex()));
-                        chatComponent.getTextList().add(currentText);
+                        texts.add(currentText);
                         index = colorToken.getIndex();
                         debug("     Closed current " + currentText);
                     }
@@ -199,13 +215,13 @@ public class ChatComponent {
                             //Todo: Maybe also create new color with the current?
                             //Close currentText
                             currentText.setText(input.substring(index, colorToken.getIndex()));
-                            chatComponent.getTextList().add(currentText);
+                            texts.add(currentText);
                             index = colorToken.getEnd();
                             debug("     Closed gradient " + currentText);
                             currentText = null;
                         } else {
                             currentText.setText(input.substring(index, colorToken.getIndex()));
-                            chatComponent.getTextList().add(currentText);
+                            texts.add(currentText);
                             debug("     Closed color and created new, old: " + currentText);
 
                             var newCurr = new ColoredText();
@@ -225,13 +241,14 @@ public class ChatComponent {
             }
 
             currentText.setText(input.substring(index));
-            chatComponent.getTextList().add(currentText);
+            texts.add(currentText);
             debug("Closed last "+currentText);
         }
+
+        return texts;
     }
 
     private static void debug(String s) {
-        System.out.println(s);
     }
 
     public JSONArray toJson() {
@@ -255,6 +272,29 @@ public class ChatComponent {
                 clickJson.put("value", clickEvent.getValue());
                 json.put("clickEvent", clickJson);
             }
+
+            if (hoverEvent != null) {
+                var hoverJson = new JSONObject();
+                hoverJson.put("action", hoverEvent.getHoverAction().name().toLowerCase());
+                var hoverTexts = new ArrayList<ColoredText>();
+                for (ColoredText text : hoverEvent.getText()) {
+                    if (text instanceof GradientText) {
+                        hoverTexts.addAll(((GradientText) text).toColoredTexts());
+
+                    } else
+                        hoverTexts.add(text);
+                }
+
+                var contents = new JSONArray();
+                contents.put("");
+
+                for(ColoredText coloredText1 : hoverTexts) {
+                    contents.put(coloredText1.toJson());
+                }
+                hoverJson.put("contents", contents);
+
+                json.put("hoverEvent", hoverJson);
+            }
         }
 
         return jsonArray;
@@ -266,5 +306,18 @@ public class ChatComponent {
                 "textList=" + textList +
                 ", generated=" + generated +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChatComponent)) return false;
+        ChatComponent that = (ChatComponent) o;
+        return generated == that.generated && Objects.equals(textList, that.textList) && Objects.equals(clickEvent, that.clickEvent) && Objects.equals(hoverEvent, that.hoverEvent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(textList, generated, clickEvent, hoverEvent);
     }
 }

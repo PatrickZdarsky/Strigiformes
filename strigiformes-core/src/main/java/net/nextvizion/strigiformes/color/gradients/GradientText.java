@@ -1,13 +1,15 @@
-package net.nextvizion.strigiformes.text;
+package net.nextvizion.strigiformes.color.gradients;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.nextvizion.strigiformes.color.GradientRegistry;
+import net.nextvizion.strigiformes.color.ColoredText;
+import net.nextvizion.strigiformes.color.TextFormat;
 import org.json.JSONObject;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -29,6 +31,20 @@ public class GradientText extends ColoredText {
                 "endColor=" + endColor +
                 ", gradientType=" + gradientType +
                 ", super=" + super.toString() + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GradientText)) return false;
+        if (!super.equals(o)) return false;
+        GradientText that = (GradientText) o;
+        return Objects.equals(endColor, that.endColor) && Objects.equals(gradientType, that.gradientType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), endColor, gradientType);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.nextvizion.strigiformes.parser.token.BaseToken;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
 import net.nextvizion.strigiformes.parser.token.VariableToken;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 
 /**
@@ -44,7 +45,7 @@ public abstract class TextProvider {
             if (!(baseToken instanceof VariableToken))
                 continue;
 
-            var variableTag = VariableTag.parse(s.substring(baseToken.getIndex(), baseToken.getEnd() + 1));
+            var variableTag = VariableTag.parse(s.substring(baseToken.getIndex(), baseToken.getEnd()));
             if (variableTag == null)
                 continue;   //Todo add debug logging?
 
@@ -61,6 +62,10 @@ public abstract class TextProvider {
         return s;
     }
 
+    public String format(String key, Locale locale, Object... arguments) {
+        return new MessageFormat(getString(key, locale), locale).format(arguments);
+    }
+
     private static String replace(String string, int index, int endindex, String replacement) {
         String newString = string.substring(0, index);
         newString += replacement;
@@ -68,7 +73,6 @@ public abstract class TextProvider {
 
         return newString;
     }
-
 
     protected abstract String resolveString(String key, Locale locale);
 }

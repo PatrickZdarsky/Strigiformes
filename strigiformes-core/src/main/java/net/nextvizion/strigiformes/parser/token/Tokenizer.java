@@ -23,7 +23,6 @@ public class Tokenizer {
     private BaseToken activeToken = null;
 
     public Tokenizer(String input) {
-        System.out.println(input);
         this.input = input;
     }
 

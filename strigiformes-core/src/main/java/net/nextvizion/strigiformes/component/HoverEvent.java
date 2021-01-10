@@ -1,8 +1,8 @@
 package net.nextvizion.strigiformes.component;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.nextvizion.strigiformes.color.ColoredText;
 
 import java.util.List;
 
@@ -11,13 +11,25 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class HoverEvent {
 
     private HoverAction hoverAction;
-    private List<ChatComponent> components;
+    private List<ColoredText> text;
+
+    public HoverEvent(HoverAction hoverAction) {
+        this.hoverAction = hoverAction;
+    }
 
     public enum HoverAction {
-        SHOW_TEXT
+        SHOW_TEXT;
+
+        public static final HoverAction[] VALUES = values();
+
+        public static HoverAction getAction(String name) {
+            for (HoverAction hoverAction : VALUES)
+                if (hoverAction.name().equalsIgnoreCase(name))
+                    return hoverAction;
+            return null;
+        }
     }
 }

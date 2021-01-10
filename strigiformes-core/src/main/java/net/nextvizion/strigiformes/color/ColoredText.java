@@ -1,4 +1,4 @@
-package net.nextvizion.strigiformes.text;
+package net.nextvizion.strigiformes.color;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -47,6 +48,19 @@ public class ColoredText {
                 ", text='" + text + '\'' +
                 ", formats=" + formats +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ColoredText)) return false;
+        ColoredText that = (ColoredText) o;
+        return Objects.equals(color, that.color) && Objects.equals(text, that.text) && Objects.equals(formats, that.formats);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, text, formats);
     }
 
     public JSONObject toJson() {

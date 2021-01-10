@@ -55,8 +55,10 @@ public class VariableTag {
             return null;
 
         String namespace = matcher.group(1);
-        //Remove trailing : from capture-group
-        namespace = namespace.substring(0, namespace.length()-1);
+        if (namespace != null) {
+            //Remove trailing : from capture-group
+            namespace = namespace.substring(0, namespace.length() - 1);
+        }
 
         String name = matcher.group(2);
         if (name == null)

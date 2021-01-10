@@ -1,7 +1,7 @@
-package net.nextvizion.strigiformes.color;
+package net.nextvizion.strigiformes.color.gradients;
 
-import net.nextvizion.strigiformes.color.gradients.LinearRgbGradientGenerator;
-import net.nextvizion.strigiformes.color.gradients.RandomGradientGenerator;
+import net.nextvizion.strigiformes.color.gradients.generator.LinearRgbGradientGenerator;
+import net.nextvizion.strigiformes.color.gradients.generator.RandomGradientGenerator;
 
 import java.util.HashMap;
 import java.util.Locale;

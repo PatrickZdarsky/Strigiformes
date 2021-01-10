@@ -1,8 +1,6 @@
-package net.nextvizion.strigiformes.text;
+package net.nextvizion.strigiformes.color;
 
 import lombok.Getter;
-
-import javax.print.attribute.SupportedValuesAttribute;
 
 /**
  * @author Patrick Zdarsky / Rxcki
