@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 public class Message {
 
-    private List<ChatComponent> components;
+    private final List<ChatComponent> components;
 
     public Message(List<ChatComponent> components) {
         this.components = components;
