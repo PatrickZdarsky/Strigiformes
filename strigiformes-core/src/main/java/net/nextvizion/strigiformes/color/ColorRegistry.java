@@ -65,6 +65,9 @@ public class ColorRegistry {
     }
 
     public static Color parse(String value) {
+        if (value.startsWith("§{"))
+            value = value.substring(2, value.length()-1);
+
         //Check if value is a hex-value
         if (HEX_PATTERN.matcher(value).matches()) {
             //Substring to delete #

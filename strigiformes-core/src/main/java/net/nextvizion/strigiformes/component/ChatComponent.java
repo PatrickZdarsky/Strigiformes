@@ -119,8 +119,8 @@ public class ChatComponent {
                     int tildeIndex = tokenPart.indexOf('~');
                     if (tildeIndex != -1) {
                         System.out.println("   Parsing gradient");
-                        var currColor = ColorRegistry.parse(tokenPart.substring(0, tildeIndex));
-                        var gradientType = GradientType.getType(tokenPart.substring(tildeIndex+1));
+                        var currColor = ColorRegistry.parse(tokenPart.substring(2, tildeIndex));
+                        var gradientType = GradientType.getType(tokenPart.substring(tildeIndex+1, tokenPart.length()-1));
 
                         //This token is a gradient start
                         if (currentText != null) {
