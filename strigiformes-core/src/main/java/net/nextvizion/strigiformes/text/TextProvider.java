@@ -24,11 +24,13 @@ public abstract class TextProvider {
     public TextProvider(@NonNull String namespace) {
         this.namespace = namespace;
         localeCache = new MapLocaleCache();
+        TextProviderRegistry.registerProvider(this);
     }
 
     public TextProvider(@NonNull String namespace, @NonNull ILocaleCache cache) {
         this.namespace = namespace;
         this.localeCache = cache;
+        TextProviderRegistry.registerProvider(this);
     }
 
     public String getString(String key, Locale locale) {
@@ -63,6 +65,7 @@ public abstract class TextProvider {
     }
 
     public String format(String key, Locale locale, Object... arguments) {
+        //Fixme: This does not work with our tags
         return new MessageFormat(getString(key, locale), locale).format(arguments);
     }
 

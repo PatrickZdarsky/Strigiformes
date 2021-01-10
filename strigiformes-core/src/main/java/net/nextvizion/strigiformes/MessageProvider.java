@@ -22,4 +22,11 @@ public class MessageProvider {
         Parser parser = new Parser(rawString);
         return parser.parse();
     }
+
+    public Message getMessage(String key, Locale locale) {
+        String rawString = textProvider.getString(key, locale);
+
+        Parser parser = new Parser(rawString);
+        return parser.parse();
+    }
 }

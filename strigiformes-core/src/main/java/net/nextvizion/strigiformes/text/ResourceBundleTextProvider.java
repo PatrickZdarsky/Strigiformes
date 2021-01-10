@@ -23,7 +23,6 @@ public class ResourceBundleTextProvider extends TextProvider{
 
 	private final Map<Locale, ResourceBundleCache> loadedLocales;
 	private final ClassLoader classLoader;
-	private final String namespace;
 
 	@Setter
 	private Locale defaultLocale = Locale.getDefault();
@@ -32,7 +31,6 @@ public class ResourceBundleTextProvider extends TextProvider{
 		super(namespace, new NOPCache());
 		loadedLocales = new HashMap<>();
 		this.classLoader = classLoader;
-		this.namespace = namespace;
 	}
 
 	@Override
@@ -55,7 +53,7 @@ public class ResourceBundleTextProvider extends TextProvider{
 	}
 
 	public ResourceBundleCache addResourceBundle(Locale locale) {
-		ResourceBundleCache resourceBundleCache = new ResourceBundleCache(namespace, locale,
+		ResourceBundleCache resourceBundleCache = new ResourceBundleCache(getNamespace(), locale,
 				classLoader);
 		loadedLocales.put(locale, resourceBundleCache);
 		return resourceBundleCache;
