@@ -5,4 +5,11 @@ package net.nextvizion.strigiformes.color;
  */
 public enum GradientType {
     //Todo: Maybe this will be its own class // placeholder
+
+    LINEAR();
+
+    public static GradientType getType(String name) {
+        System.out.println("   Gradienttype retrieval for "+name);
+        return LINEAR;
+    }
 }

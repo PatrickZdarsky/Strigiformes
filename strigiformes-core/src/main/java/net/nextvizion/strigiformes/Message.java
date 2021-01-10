@@ -21,4 +21,11 @@ public class Message {
     public Message() {
         components = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "components=" + components +
+                '}';
+    }
 }

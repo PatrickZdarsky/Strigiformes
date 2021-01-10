@@ -1,8 +1,7 @@
 package net.nextvizion.strigiformes.text;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.awt.Color;
@@ -12,6 +11,7 @@ import java.util.List;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
+@NoArgsConstructor
 public class ColoredText {
 
     @Getter @Setter
@@ -37,5 +37,14 @@ public class ColoredText {
             formats.add(textFormat);
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "ColoredText{" +
+                "color=" + color +
+                ", text='" + text + '\'' +
+                ", formats=" + formats +
+                '}';
     }
 }
