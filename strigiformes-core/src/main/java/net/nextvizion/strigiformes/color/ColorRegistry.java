@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 public final class ColorRegistry {
 
     public static final Pattern HEX_PATTERN = Pattern.compile("#[0-9a-fA-F]{6}");
-    private static Map<String, Color> colors = new HashMap<>();
 
+    private static final Map<String, Color> colors = new HashMap<>();
 
     static {
         addColor("0", new Color(0));
