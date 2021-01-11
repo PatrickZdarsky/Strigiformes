@@ -20,9 +20,7 @@ public class MessageCache {
     @Getter
     private final Object[] arguments;
 
-
     private final Map<Locale, Message> cache = new HashMap<>(5);
-
 
     public Message getMessage(Locale locale) {
         return cache.computeIfAbsent(locale, (l) -> messageProvider.getMessage(key, locale, arguments));
