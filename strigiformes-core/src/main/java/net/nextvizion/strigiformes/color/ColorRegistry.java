@@ -52,21 +52,19 @@ public final class ColorRegistry {
     }
 
     public static Color getColor(String name) {
-        if (colors.containsKey(name.toLowerCase(Locale.ROOT)))
-            return colors.get(name.toLowerCase(Locale.ROOT));
-        return Color.getColor(name);
+        return colors.getOrDefault(name.toLowerCase(Locale.ROOT), Color.getColor(name));
     }
 
     public static void addColor(String name, Color color) {
         if (colors.containsKey(name.toLowerCase(Locale.ROOT))) {
             throw new IllegalStateException("The color " + name + " is already defined!");
         }
-        colors.put(name.toLowerCase(Locale.ROOT), color);
+        colors.putIfAbsent(name.toLowerCase(Locale.ROOT), color);
     }
 
     public static Color parse(String value) {
         if (value.startsWith("§{"))
-            value = value.substring(2, value.length()-1);
+            value = value.substring(2, value.length() - 1);
 
         //Check if value is a hex-value
         if (HEX_PATTERN.matcher(value).matches()) {
