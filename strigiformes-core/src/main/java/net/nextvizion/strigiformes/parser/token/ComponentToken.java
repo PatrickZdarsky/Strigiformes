@@ -20,7 +20,7 @@ public class ComponentToken extends BaseToken {
     @Override
     public void addChildren(BaseToken baseToken) {
         if (baseToken instanceof ComponentToken) {
-            throw new ParserException("Tried to add ComponentTag as Children for a ComponentTag");
+            throw new ParserException("Tried to add ComponentTag as children for a ComponentTag");
         }
 
         children.add(baseToken);
