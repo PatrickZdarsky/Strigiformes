@@ -10,6 +10,7 @@ import java.util.List;
  * @author Patrick Zdarsky / Rxcki
  */
 public class LinearRgbGradientGenerator implements GradientGenerator {
+
     @Override
     public List<Color> getGradient(String string, Color from, Color to) {
         double[] red = interpolate(from.getRed(), to.getRed(), string.length());
@@ -28,7 +29,7 @@ public class LinearRgbGradientGenerator implements GradientGenerator {
     }
 
     private static double[] interpolate(double from, double to, int max) {
-        final double[] res = new double[max];
+        double[] res = new double[max];
         for (int i = 0; i < max; i++) {
             res[i] = from + i * ((to - from) / (max - 1));
         }
