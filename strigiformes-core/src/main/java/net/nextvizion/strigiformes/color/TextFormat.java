@@ -33,7 +33,7 @@ public enum TextFormat {
         }
         //Parse color-tag
         if (code.startsWith("§{")) {
-            String format = code.substring(2, code.length()-2);
+            String format = code.substring(2, code.length() - 2);
             return valueOf(format.toUpperCase());
         }
         return null;
