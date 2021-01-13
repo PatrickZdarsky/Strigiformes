@@ -21,6 +21,7 @@ public class HoverEvent {
     }
 
     public enum HoverAction {
+
         SHOW_TEXT;
 
         public static final HoverAction[] VALUES = values();
