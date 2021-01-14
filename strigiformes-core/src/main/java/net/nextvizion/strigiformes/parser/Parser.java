@@ -12,14 +12,10 @@ import java.util.stream.Collectors;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
-@RequiredArgsConstructor
 public class Parser {
 
-    @NonNull
-    private final String input;
-
     //At this point all variables are already resolved
-    public Message parse() {
+    public static Message parse(String input) {
         if (input.isEmpty())
             return null;
 

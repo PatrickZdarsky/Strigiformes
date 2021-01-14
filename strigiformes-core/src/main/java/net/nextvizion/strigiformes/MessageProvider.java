@@ -19,14 +19,12 @@ public class MessageProvider {
     public Message getMessage(String key, Locale locale, Object... arguments) {
         String rawString = textProvider.format(key, locale, arguments);
 
-        Parser parser = new Parser(rawString);
-        return parser.parse();
+        return Parser.parse(rawString);
     }
 
     public Message getMessage(String key, Locale locale) {
         String rawString = textProvider.getString(key, locale);
 
-        Parser parser = new Parser(rawString);
-        return parser.parse();
+        return Parser.parse(rawString);
     }
 }
