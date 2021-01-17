@@ -13,6 +13,6 @@ public class ColorToken extends BaseToken {
 
     @Override
     public void addChildren(BaseToken baseToken) {
-        throw new TokenizerException("Nope");
+        throw new TokenizerException("A ColorToken cannot have a child!");
     }
 }

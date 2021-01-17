@@ -13,6 +13,6 @@ public class VariableToken extends BaseToken {
 
     @Override
     public void addChildren(BaseToken baseToken) {
-        throw new TokenizerException("Nope");
+        throw new TokenizerException("A VariableToken cannot have a child!");
     }
 }

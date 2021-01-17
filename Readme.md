@@ -43,4 +43,7 @@ This will create the following ChatComponent complete with a ClickEvent and Hove
           "value": "/tp Notch"
         }
     }
-    
+   
+##Todo
+- Improve MessageFormat implementation
+- Improve Exceptions to display the problematic part better
