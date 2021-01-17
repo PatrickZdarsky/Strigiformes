@@ -24,6 +24,12 @@ public class Message {
         components = new ArrayList<>();
     }
 
+    public Message addComponent(ChatComponent component) {
+        components.add(component);
+
+        return this;
+    }
+
     public JSONArray toJson() {
         var array = new JSONArray();
         for (ChatComponent component : components)
@@ -31,6 +37,7 @@ public class Message {
 
         return array;
     }
+
 
     @Override
     public String toString() {

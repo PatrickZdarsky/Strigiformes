@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 /**
  * @author Patrick Zdarsky / Rxcki
+ *
+ * This class is part of the terrible workaround to make the MessageFormat work...
  */
 public class MessageFormatTokenizer {
 

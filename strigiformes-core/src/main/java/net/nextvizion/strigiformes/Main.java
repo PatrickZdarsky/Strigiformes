@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int tries = 10000;
+        int tries = 1;
         double time1 = 0, time2 = 0;
 
 
@@ -18,10 +18,11 @@ public class Main {
             var colorParse = "§{green~random}I am a beautiful Gradient§{white}";
             var componentParse = "%{§cRxc§4ki|run_command:/pi Rxcki|show_text:§8This §7is a test\n§6new line}";
             long now = System.nanoTime();
-            var message = Parser.parse(s1+s1+s1+s1+s1+s1+colorParse+componentParse);
+            var message = Parser.parse("%{§cNotch|run_command:/tp Notch|show_text:Teleport to Notch!}");
             time1 += ((System.nanoTime()-now)/1000000.0);
             now = System.nanoTime();
             var json = message.toJson();
+            System.out.println(json);
             time2 += ((System.nanoTime()-now)/1000000.0);
         }
 

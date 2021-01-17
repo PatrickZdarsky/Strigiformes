@@ -254,6 +254,7 @@ public class ChatComponent {
     public JSONArray toJson() {
         var jsonArray = new JSONArray();
         var coloredTexts = new ArrayList<ColoredText>();
+        //Improve this logic, so that we don't have to iterate over it twice
         for (ColoredText coloredText : textList) {
             if (coloredText instanceof GradientText) {
                 coloredTexts.addAll(((GradientText) coloredText).toColoredTexts());
@@ -286,6 +287,7 @@ public class ChatComponent {
                 }
 
                 var contents = new JSONArray();
+                //Why mojang? just why?
                 contents.put("");
 
                 for(ColoredText coloredText1 : hoverTexts) {
