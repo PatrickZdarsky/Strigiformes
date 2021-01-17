@@ -1,0 +1,37 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+image: maven:3.6-openjdk-11
+
+cache:
+  paths:
+    - .m2/repository
+
+# For merge requests do not `deploy` but only run `verify`.
+# See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+.verify: &verify
+  stage: test
+  script:
+    - 'mvn $MAVEN_CLI_OPTS verify'
+  except:
+    - master
+
+verify:jdk11:
+  <<: *verify
+
+deploy:jdk11:
+  stage: deploy
+  services:
+    - redis:latest
+  script:
+    - if [ ! -f ci_settings.xml ];
+      then echo "CI settings missing\! If deploying to GitLab Maven Repository, please see https://docs.gitlab.com/ee/user/project/packages/maven_repository.html#creating-maven-packages-with-gitlab-cicd for instructions.";
+      fi
+    - 'mvn $MAVEN_CLI_OPTS deploy -s ci_settings.xml'
+  only:
+    - master
