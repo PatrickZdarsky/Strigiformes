@@ -20,15 +20,14 @@ public class Parser {
             return null;
 
         var message = new Message();
-        var tokenizer = new Tokenizer(input);
-        tokenizer.tokenize();
-        //Position up to when we have parsed the input
-        int index = 0;
 
-        // All tokens except VariableTokens since these should have been already resolved
-        var tokens = tokenizer.getTokens().stream()
+        // Get all tokens except VariableTokens since these should have been already resolved
+        var tokens = Tokenizer.tokenize(input).stream()
                 .filter(baseToken -> (baseToken instanceof ComponentToken))
                 .collect(Collectors.toList());
+
+        //Position up to when we have parsed the input
+        int index = 0;
 
         for (BaseToken baseToken : tokens) {
             //Parse text in front of component

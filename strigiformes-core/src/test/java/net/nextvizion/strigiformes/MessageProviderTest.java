@@ -96,5 +96,9 @@ class MessageProviderTest {
         assertEquals("/pi Rxcki", message.getComponents().get(0).getClickEvent().getValue());
     }
 
-
+    @Test
+    void testFormat() {
+        Message message = messageProvider.getMessage("testFormat", Locale.ENGLISH, 365, "year");
+        assertEquals("There are ", message.getComponents().get(0).getTextList().get(0).getText());
+    }
 }

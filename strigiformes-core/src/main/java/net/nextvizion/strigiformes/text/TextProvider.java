@@ -6,6 +6,7 @@ import net.nextvizion.strigiformes.cache.ILocaleCache;
 import net.nextvizion.strigiformes.cache.MapLocaleCache;
 import net.nextvizion.strigiformes.parser.VariableTag;
 import net.nextvizion.strigiformes.parser.token.BaseToken;
+import net.nextvizion.strigiformes.parser.token.MessageFormatTokenizer;
 import net.nextvizion.strigiformes.parser.token.Tokenizer;
 import net.nextvizion.strigiformes.parser.token.VariableToken;
 
@@ -33,17 +34,29 @@ public abstract class TextProvider {
         TextProviderRegistry.registerProvider(this);
     }
 
+
+    protected abstract String resolveString(String key, Locale locale);
+
+
     public String getString(String key, Locale locale) {
         var s = localeCache.getLocaledString(locale, key, () -> resolveString(key, locale));
 
+        return resolveVariables(locale, s);
+    }
+
+    public String format(String key, Locale locale, Object... arguments) {
+        var s = localeCache.getLocaledString(locale, key, () -> resolveString(key, locale));
+        s =  applyMessageFormat(s, locale, arguments);
+        return resolveVariables(locale, s);
+    }
+
+    private String resolveVariables(Locale locale, String s) {
         //Resolve variables
         //Todo: Check for StackOverflowErrors
 
-        //TOdo: Cache tokenizer
-        var tokenizer = new Tokenizer(s);
-        tokenizer.tokenize();
-
-        for (BaseToken baseToken : tokenizer.getTokens()) {
+        //Todo: Cache tokenizer result
+        var tokens = Tokenizer.tokenize(s);
+        for (BaseToken baseToken : tokens) {
             if (!(baseToken instanceof VariableToken))
                 continue;
 
@@ -64,11 +77,6 @@ public abstract class TextProvider {
         return s;
     }
 
-    public String format(String key, Locale locale, Object... arguments) {
-        //Fixme: This does not work with our tags
-        return new MessageFormat(getString(key, locale), locale).format(arguments);
-    }
-
     private static String replace(String string, int index, int endindex, String replacement) {
         String newString = string.substring(0, index);
         newString += replacement;
@@ -77,5 +85,28 @@ public abstract class TextProvider {
         return newString;
     }
 
-    protected abstract String resolveString(String key, Locale locale);
+
+    /**
+     * Since MessageFormat also uses curly brackets for their tags it is clashing with our system.
+     * As a quick workaround we extract the tags that are meant for MessageFormat and feed them to it one-by-one.
+     * This has the disadvantage that we have to create a new MessageFormat object for each tag
+     *
+     * A better solution for this is needed!
+     */
+    private static String applyMessageFormat(String s, Locale locale, Object... arguments) {
+        if (arguments.length == 0)
+            return s;
+
+        for (MessageFormatTokenizer.FormatToken formatToken : MessageFormatTokenizer.tokenize(s)) {
+            if (formatToken.getEnd() == 0)
+                continue; //Just ignore it,(this should be handled.... ---> for the future dev)
+
+            String part = s.substring(formatToken.getIndex(), formatToken.getEnd());
+
+            var formatted = new MessageFormat(part, locale).format(arguments);
+            s = replace(s, formatToken.getIndex(), formatToken.getEnd(), formatted);
+        }
+
+        return s;
+    }
 }

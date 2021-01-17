@@ -37,7 +37,7 @@ public class ResourceBundleTextProvider extends TextProvider{
 	protected String resolveString(String key, Locale locale) {
 		if (!loadedLocales.containsKey(locale)) {
 			if (Objects.isNull(getDefaultLocale())) {
-				throw new IllegalArgumentException("No default locale has been set");
+				throw new IllegalStateException("No default locale has been set");
 			}
 
 			//Fallback to default locale
@@ -46,7 +46,7 @@ public class ResourceBundleTextProvider extends TextProvider{
 
 		ResourceBundle resourceBundle = loadedLocales.get(locale).getResourceBundle();
 		if (Objects.isNull(resourceBundle)) {
-			throw new IllegalArgumentException("Default locale isn't loaded");
+			throw new IllegalStateException("Default locale isn't loaded");
 		}
 
 		return resourceBundle.getString(key);

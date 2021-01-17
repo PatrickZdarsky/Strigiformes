@@ -18,7 +18,7 @@ public class Main {
             var colorParse = "§{green~random}I am a beautiful Gradient§{white}";
             var componentParse = "%{§cRxc§4ki|run_command:/pi Rxcki|show_text:§8This §7is a test\n§6new line}";
             long now = System.nanoTime();
-            var message = Parser.parse(s1+s1+s1+s1+s1+s1);
+            var message = Parser.parse(s1+s1+s1+s1+s1+s1+colorParse+componentParse);
             time1 += ((System.nanoTime()-now)/1000000.0);
             now = System.nanoTime();
             var json = message.toJson();
