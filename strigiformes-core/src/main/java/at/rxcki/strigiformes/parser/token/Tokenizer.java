@@ -43,7 +43,7 @@ public class Tokenizer {
                 }
                 tokens.add(token);
             } else {
-                var indicator = matchResult.group().substring(0, 1);
+                var indicator = matchResult.group().substring(0, 1).charAt(0);
                 if (activeToken == null) {
                     activeToken = TokenFactory.getToken(indicator, null, matchResult.start());
                     tokens.add(activeToken);
