@@ -12,6 +12,15 @@
         <module>strigiformes-core</module>
     </modules>
 
+    <contributors>
+        <contributor>
+            <name>Patrick Zdarsky ~Rxcki</name>
+        </contributor>
+        <contributor>
+            <name>Steffen ~theEvilReaper</name>
+        </contributor>
+    </contributors>
+
     <distributionManagement>
         <repository>
             <id>gitlab-maven</id>
