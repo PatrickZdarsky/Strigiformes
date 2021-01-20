@@ -13,21 +13,21 @@ class TokenFactoryTest {
 
     @Test
     void testColorToken() {
-        assertEquals(ColorToken.class, TokenFactory.getToken("§", null, 0).getClass());
+        assertEquals(ColorToken.class, TokenFactory.getToken('§', null, 0).getClass());
     }
 
     @Test
     void testVariableToken() {
-        assertEquals(VariableToken.class, TokenFactory.getToken("$", null, 0).getClass());
+        assertEquals(VariableToken.class, TokenFactory.getToken('$', null, 0).getClass());
     }
 
     @Test
     void testComponentToken() {
-        assertEquals(ComponentToken.class, TokenFactory.getToken("%", null, 0).getClass());
+        assertEquals(ComponentToken.class, TokenFactory.getToken('%', null, 0).getClass());
     }
 
     @Test
     void testInvalidToken() {
-        assertNull(TokenFactory.getToken("asdas", null, 0));
+        assertNull(TokenFactory.getToken('k', null, 0));
     }
 }

@@ -35,7 +35,6 @@ public abstract class TextProvider {
         TextProviderRegistry.registerProvider(this);
     }
 
-
     protected abstract String resolveString0(String key, Locale locale);
 
     String resolveString(String key, Locale locale) {
@@ -99,7 +98,6 @@ public abstract class TextProvider {
         return newString;
     }
 
-
     /**
      * Since MessageFormat also uses curly brackets for their tags it is clashing with our system.
      * As a quick workaround we extract the tags that are meant for MessageFormat and feed them to it one-by-one.
@@ -107,6 +105,7 @@ public abstract class TextProvider {
      *
      * A better solution for this is needed!
      */
+
     private static String applyMessageFormat(String s, Locale locale, Object... arguments) {
         if (arguments.length == 0)
             return s;

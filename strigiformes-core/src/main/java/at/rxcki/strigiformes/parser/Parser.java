@@ -7,6 +7,7 @@ import at.rxcki.strigiformes.parser.token.ComponentToken;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -21,10 +22,9 @@ public class Parser {
 
         Message message = new Message();
 
+        List<BaseToken> tokens = Tokenizer.tokenize(input);
         // Get all tokens except VariableTokens since these should have been already resolved
-        List<BaseToken> tokens = Tokenizer.tokenize(input).stream()
-                .filter(baseToken -> (baseToken instanceof ComponentToken))
-                .collect(Collectors.toList());
+        tokens.removeIf(baseToken -> !(baseToken instanceof ComponentToken));
 
         //Position up to when we have parsed the input
         int index = 0;

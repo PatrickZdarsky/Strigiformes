@@ -28,7 +28,6 @@ public class MessageFormatTokenizer {
         Iterator<MatchResult> tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
         while (tokenIterator.hasNext()) {
             MatchResult matchResult = tokenIterator.next();
-            String result = matchResult.group();
 
             if (matchResult.group().equals("}")) {
                 if (activeToken == null) {
@@ -36,7 +35,7 @@ public class MessageFormatTokenizer {
                     continue;
                 }
                 //Close the active token
-                activeToken.setEnd(matchResult.start()+1);
+                activeToken.setEnd(matchResult.start() + 1);
                 tokens.add(activeToken);
                 activeToken = null;
 

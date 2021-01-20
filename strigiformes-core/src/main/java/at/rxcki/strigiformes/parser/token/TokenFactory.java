@@ -5,13 +5,13 @@ package at.rxcki.strigiformes.parser.token;
  */
 public class TokenFactory {
 
-    public static BaseToken getToken(String indicator, BaseToken parent, int index) {
+    public static BaseToken getToken(char indicator, BaseToken parent, int index) {
         switch (indicator) {
-            case "$":
+            case '$':
                 return new VariableToken(parent,index);
-            case "%":
+            case '%':
                 return new ComponentToken(parent,index);
-            case "§":
+            case '§':
                 return new ColorToken(parent,index);
         }
         return null;
