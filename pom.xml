@@ -10,6 +10,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>strigiformes-core</module>
+        <module>strigiformes-examples</module>
     </modules>
 
     <contributors>

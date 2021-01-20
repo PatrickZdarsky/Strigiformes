@@ -14,15 +14,43 @@ Strigiformes is a minecraft translation framework. It can convert human-readable
 ## The template string
 The template string is the human-readable form of a ChatComponent message. It is later being parsed to create the ChatComponent.
 ### Colors
-Strigiformes supports legacy color-codes, and the new RGB colors. It translates all colors to the 
+Strigiformes supports legacy color-codes, and the new RGB colors. It translates all colors to the new hex-representation.
+
+Colors can be set in the following ways:
+- §d            (Legacy color codes)
+- §{white}      Using a predefined name
+- §{#224433}    Using hex-values
+
+By default the minecraft built-in names are registered, and the ones declared in the ``java.awt.Color`` class. By adding a new color using ``ColorRegistry.addColor(name, color)`` one can add more values.
+
+#### Color gradients
+Color gradients are defined by two color-tags like: 
+``§{yellow~}I am a beautiful Gradient§{red}``
+These gradients are defined by adding a ``~`` suffix to the color. After this character a specific GradientGenerator can be optionally set. By default the LinearGradient is used.
+
+Example: ``§{yellow~random}Colorful§{red}`` This message will use the RandomGradientGenerator.
+
+Available Generators:
+- LinearRgbGradientGenerator
+- RandomGradientGenerator
+- More to come...
 
 
+**IMPORTANT:** When enabling the legacy 1.8 mode using ``ColorRegistry.useLegacyColors = true;`` only legacy colors in the form of: `§a` are supported! 
+Color-Gradients are also not supported in this mode!
 
 ### Variables
 Variables are used to avoid having duplicate messages defined. Variables look like the following: `${NAMESPACE:VARIABLE_NAME}`
 
 Normally the tag contains only one value which defines the key. The parser will replace the tag with the translation-string with the specified key.
 If multiple TextProviders are created one can access strings from the other TextProvider by specifying the namespace through prefixing the name with it and using a colon to separate the two.
+
+Example:
+
+    prefix=Lobby:
+    message=${prefix} Welcome to the server!   
+
+Will produce: ``Lobby: Welcome to the server!``
 
 ### Manual ChatComponent definition
 To manually create a ChatComponent with a ClickEvent or HoverEvent you have to use the `%{...}` tag.
