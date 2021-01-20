@@ -14,12 +14,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * @author Patrick Zdarsky / Rxcki
  */
 public class ChatComponent {
+
+    private static final Pattern PIPE_SPLIT_PATTERN = Pattern.compile("(?<!\\\\)\\|");
+    private static final Pattern COLON_PATTERN = Pattern.compile(":");
+
     @Getter
     private List<ColoredText> textList = new ArrayList<>();
 
@@ -54,10 +59,11 @@ public class ChatComponent {
     }
 
     /**
-     * This parse method can parse a single declared chatcomponent or a normal color-coded text
+     * This parse method can parse a single declared {@link ChatComponent} or a normal color-coded text
      * @param input
      * @return
      */
+
     public static ChatComponent parse(String input) {
         ChatComponent chatComponent = new ChatComponent();
         if (!input.startsWith("%{")) {
@@ -68,12 +74,11 @@ public class ChatComponent {
             debug("Decoding declared component: "+innerPart);
 
             //Split by | but ignore | which are disabled by \
-            //Todo: Precompile the pattern
-            String[] split = innerPart.split("(?<!\\\\)\\|");
+            String[] split = PIPE_SPLIT_PATTERN.split(innerPart);
             chatComponent.setTextList(parseString(split[0]));
             if (split.length > 1) {
                 for (int i = 1; i < split.length; i++) {
-                    var dottedSplit = split[i].split(":");
+                    var dottedSplit = COLON_PATTERN.split(split[i]);
                     var clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0].toUpperCase());
                     debug(clickAction+"");
                     if (clickAction != null) {
