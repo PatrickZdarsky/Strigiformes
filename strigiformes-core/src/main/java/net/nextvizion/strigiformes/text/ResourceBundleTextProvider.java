@@ -34,7 +34,7 @@ public class ResourceBundleTextProvider extends TextProvider{
 	}
 
 	@Override
-	protected String resolveString(String key, Locale locale) {
+	protected String resolveString0(String key, Locale locale) {
 		if (!loadedLocales.containsKey(locale)) {
 			if (Objects.isNull(getDefaultLocale())) {
 				throw new IllegalStateException("No default locale has been set");

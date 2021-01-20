@@ -35,17 +35,30 @@ public abstract class TextProvider {
     }
 
 
-    protected abstract String resolveString(String key, Locale locale);
+    protected abstract String resolveString0(String key, Locale locale);
+
+    String resolveString(String key, Locale locale) {
+        int dottedIndex = key.indexOf(':');
+        if (dottedIndex >= 0) {
+            String namespace = key.substring(0, dottedIndex);
+            String name = key.substring(dottedIndex+1);
+
+            //Todo: Check if a provider with this namespace exists
+            return TextProviderRegistry.getProviderByNamespace(namespace).resolveString(name, locale);
+        }
+
+        return localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));
+    }
 
 
     public String getString(String key, Locale locale) {
-        var s = localeCache.getLocaledString(locale, key, () -> resolveString(key, locale));
+        var s = resolveString(key, locale);
 
         return resolveVariables(locale, s);
     }
 
     public String format(String key, Locale locale, Object... arguments) {
-        var s = localeCache.getLocaledString(locale, key, () -> resolveString(key, locale));
+        var s = localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));
         s =  applyMessageFormat(s, locale, arguments);
         return resolveVariables(locale, s);
     }
