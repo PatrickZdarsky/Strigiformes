@@ -5,6 +5,7 @@ import lombok.NonNull;
 import at.rxcki.strigiformes.exception.ParserException;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -50,7 +51,7 @@ public class VariableTag {
     }
 
     public static VariableTag parse(String s) {
-        var matcher = VARIABLE_COMPONENT_BRACE_PATTERN.matcher(s);
+        Matcher matcher = VARIABLE_COMPONENT_BRACE_PATTERN.matcher(s);
         if (!matcher.find())
             return null;
 

@@ -64,10 +64,15 @@ public class ColoredText {
     }
 
     public JSONObject toJson() {
-        var json = new JSONObject();
+        JSONObject json = new JSONObject();
         json.put("text", getText());
-        if (getColor() != null)
-            json.put("color", String.format("#%06x", getColor().getRGB() & 0x00FFFFFF));
+        if (getColor() != null) {
+            if (ColorRegistry.useLegacyColors) {
+                json.put("color", ColorRegistry.getLegacyColor(getColor()));
+            } else {
+                json.put("color", String.format("#%06x", getColor().getRGB() & 0x00FFFFFF));
+            }
+        }
 
         if (getFormats() != null)
             for (TextFormat textFormat : getFormats())

@@ -11,6 +11,7 @@ import at.rxcki.strigiformes.parser.token.Tokenizer;
 import at.rxcki.strigiformes.parser.token.VariableToken;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -52,13 +53,13 @@ public abstract class TextProvider {
 
 
     public String getString(String key, Locale locale) {
-        var s = resolveString(key, locale);
+        String s = resolveString(key, locale);
 
         return resolveVariables(locale, s);
     }
 
     public String format(String key, Locale locale, Object... arguments) {
-        var s = localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));
+        String s = localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));
         s =  applyMessageFormat(s, locale, arguments);
         return resolveVariables(locale, s);
     }
@@ -68,19 +69,19 @@ public abstract class TextProvider {
         //Todo: Check for StackOverflowErrors
 
         //Todo: Cache tokenizer result
-        var tokens = Tokenizer.tokenize(s);
+        List<BaseToken> tokens = Tokenizer.tokenize(s);
         for (BaseToken baseToken : tokens) {
             if (!(baseToken instanceof VariableToken))
                 continue;
 
-            var variableTag = VariableTag.parse(s.substring(baseToken.getIndex(), baseToken.getEnd()));
+            VariableTag variableTag = VariableTag.parse(s.substring(baseToken.getIndex(), baseToken.getEnd()));
             if (variableTag == null)
                 continue;   //Todo add debug logging?
 
             if (variableTag.getNamespace() == null || variableTag.getNamespace().equalsIgnoreCase(namespace)) {
                 s = replace(s, baseToken.getIndex(), baseToken.getEnd(), getString(variableTag.getName(), locale));
             } else {
-                var textProvider = TextProviderRegistry.getProviderByNamespace(variableTag.getNamespace());
+                TextProvider textProvider = TextProviderRegistry.getProviderByNamespace(variableTag.getNamespace());
                 if (textProvider == null)
                     continue; //Todo add debug logging?
                 s = replace(s, baseToken.getIndex(), baseToken.getEnd(), textProvider.getString(variableTag.getName(), locale));
@@ -116,7 +117,7 @@ public abstract class TextProvider {
 
             String part = s.substring(formatToken.getIndex(), formatToken.getEnd());
 
-            var formatted = new MessageFormat(part, locale).format(arguments);
+            String formatted = new MessageFormat(part, locale).format(arguments);
             s = replace(s, formatToken.getIndex(), formatToken.getEnd(), formatted);
         }
 

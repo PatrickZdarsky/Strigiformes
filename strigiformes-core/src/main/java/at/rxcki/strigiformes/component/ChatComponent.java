@@ -11,6 +11,7 @@ import at.rxcki.strigiformes.parser.token.Tokenizer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +65,7 @@ public class ChatComponent {
             chatComponent.setGenerated(true);
             chatComponent.setTextList(parseString(input));
         } else {
-            var innerPart = input.substring(2, input.length()-1);
+            String innerPart = input.substring(2, input.length()-1);
             debug("Decoding declared component: "+innerPart);
 
             //Split by | but ignore | which are disabled by \
@@ -73,14 +74,14 @@ public class ChatComponent {
             chatComponent.setTextList(parseString(split[0]));
             if (split.length > 1) {
                 for (int i = 1; i < split.length; i++) {
-                    var dottedSplit = split[i].split(":");
-                    var clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0].toUpperCase());
+                    String[] dottedSplit = split[i].split(":");
+                    ClickEvent.ClickAction clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0].toUpperCase());
                     debug(clickAction+"");
                     if (clickAction != null) {
                         chatComponent.click(clickAction, dottedSplit[1]);
                         continue;
                     }
-                    var hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0].toUpperCase());
+                    HoverEvent.HoverAction hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0].toUpperCase());
                     if (hoverAction != null) {
                         HoverEvent hoverEvent = new HoverEvent(hoverAction);
                         hoverEvent.setText(parseString(split[i].substring(dottedSplit[0].length()+1)));
@@ -98,7 +99,7 @@ public class ChatComponent {
 
         debug("Parsing \""+ input +"\"");
         //We are parsing a normal text
-        var tokens = Tokenizer.tokenize(input).stream()
+        List<ColorToken> tokens = Tokenizer.tokenize(input).stream()
                 .filter(baseToken -> baseToken instanceof ColorToken)
                 .map(baseToken -> (ColorToken) baseToken)
                 .collect(Collectors.toList());
@@ -117,9 +118,9 @@ public class ChatComponent {
 
         ColoredText currentText = null;
         for (ColorToken colorToken : tokens) {
-            var tokenPart = input.substring(colorToken.getIndex(), colorToken.getEnd());
+            String tokenPart = input.substring(colorToken.getIndex(), colorToken.getEnd());
 
-            var format = TextFormat.getFormat(tokenPart);
+            TextFormat format = TextFormat.getFormat(tokenPart);
 
             if (format != null) {
                 debug("  Parsing format " + tokenPart);
@@ -130,7 +131,7 @@ public class ChatComponent {
                     if (texts.size() > 0) {
                         debug("    Last is available");
                         //Set color and format from previous
-                        var prevText = texts.get(texts.size() - 1);
+                        ColoredText prevText = texts.get(texts.size() - 1);
                         currentText.setColor(prevText.getColor());
                         if (prevText.getFormats() != null)
                             for (TextFormat textFormat : prevText.getFormats())
@@ -153,11 +154,11 @@ public class ChatComponent {
                         index = colorToken.getEnd();
                         continue;
                     } else {
-                        var text = input.substring(index, colorToken.getIndex());
+                        String text = input.substring(index, colorToken.getIndex());
                         currentText.setText(text);
                         texts.add(currentText);
 
-                        var newCurr = new ColoredText();
+                        ColoredText newCurr = new ColoredText();
                         newCurr.addFormat(format);
                         newCurr.setColor(currentText.getColor());
                         if (currentText.getFormats() != null)
@@ -176,8 +177,8 @@ public class ChatComponent {
                 int tildeIndex = tokenPart.indexOf('~');
                 if (tildeIndex != -1) {
                     debug("   Parsing gradient");
-                    var currColor = ColorRegistry.parse(tokenPart.substring(2, tildeIndex));
-                    var gradientType = tokenPart.substring(tildeIndex + 1, tokenPart.length() - 1);
+                    Color currColor = ColorRegistry.parse(tokenPart.substring(2, tildeIndex));
+                    String gradientType = tokenPart.substring(tildeIndex + 1, tokenPart.length() - 1);
 
                     //This token is a gradient start
                     if (currentText != null) {
@@ -191,7 +192,7 @@ public class ChatComponent {
                         index = colorToken.getIndex();
                         debug("     Closed current " + currentText);
                     }
-                    var newCurr = new GradientText();
+                    GradientText newCurr = new GradientText();
                     newCurr.setColor(currColor);
                     newCurr.setGradientType(gradientType);
                     index = colorToken.getEnd();
@@ -201,7 +202,7 @@ public class ChatComponent {
                     continue;
                 } else {
                     debug("   Parsing color");
-                    var currColor = ColorRegistry.parse(tokenPart);
+                    Color currColor = ColorRegistry.parse(tokenPart);
                     if (currentText == null) {
                         debug("    CurrentText is null creating new");
                         currentText = new ColoredText();
@@ -224,7 +225,7 @@ public class ChatComponent {
                             texts.add(currentText);
                             debug("     Closed color and created new, old: " + currentText);
 
-                            var newCurr = new ColoredText();
+                            ColoredText newCurr = new ColoredText();
                             newCurr.setColor(currColor);
                             currentText = newCurr;
                             index = colorToken.getEnd();
@@ -252,8 +253,8 @@ public class ChatComponent {
     }
 
     public JSONArray toJson() {
-        var jsonArray = new JSONArray();
-        var coloredTexts = new ArrayList<ColoredText>();
+        JSONArray jsonArray = new JSONArray();
+        List<ColoredText> coloredTexts = new ArrayList<>();
         //Improve this logic, so that we don't have to iterate over it twice
         for (ColoredText coloredText : textList) {
             if (coloredText instanceof GradientText) {
@@ -264,20 +265,20 @@ public class ChatComponent {
         }
 
         for (ColoredText coloredText : coloredTexts) {
-            var json = coloredText.toJson();
+            JSONObject json = coloredText.toJson();
             jsonArray.put(json);
 
             if (clickEvent != null) {
-                var clickJson = new JSONObject();
+                JSONObject clickJson = new JSONObject();
                 clickJson.put("action", clickEvent.getClickAction().name().toLowerCase());
                 clickJson.put("value", clickEvent.getValue());
                 json.put("clickEvent", clickJson);
             }
 
             if (hoverEvent != null) {
-                var hoverJson = new JSONObject();
+                JSONObject hoverJson = new JSONObject();
                 hoverJson.put("action", hoverEvent.getHoverAction().name().toLowerCase());
-                var hoverTexts = new ArrayList<ColoredText>();
+                List<ColoredText> hoverTexts = new ArrayList<>();
                 for (ColoredText text : hoverEvent.getText()) {
                     if (text instanceof GradientText) {
                         hoverTexts.addAll(((GradientText) text).toColoredTexts());
@@ -286,7 +287,7 @@ public class ChatComponent {
                         hoverTexts.add(text);
                 }
 
-                var contents = new JSONArray();
+                JSONArray contents = new JSONArray();
                 //Why mojang? just why?
                 contents.put("");
 

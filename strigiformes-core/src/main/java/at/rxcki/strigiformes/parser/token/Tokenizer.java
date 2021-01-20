@@ -3,7 +3,9 @@ package at.rxcki.strigiformes.parser.token;
 import at.rxcki.strigiformes.exception.TokenizerException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 /**
@@ -17,10 +19,10 @@ public class Tokenizer {
         List<BaseToken> tokens = new ArrayList<>();
         BaseToken activeToken = null;
 
-        var tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
+        Iterator<MatchResult> tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
         while (tokenIterator.hasNext()) {
-            var matchResult = tokenIterator.next();
-            var result = matchResult.group();
+            MatchResult matchResult = tokenIterator.next();
+            String result = matchResult.group();
 
             if (matchResult.group().equals("}")) {
                 if (activeToken == null) {
@@ -34,7 +36,7 @@ public class Tokenizer {
             } else if (result.charAt(0) == '§'
                     && matchResult.group().length() == 2
                     && result.charAt(result.length()-1) != '{') {
-                var token = new ColorToken(null, matchResult.start());
+                ColorToken token = new ColorToken(null, matchResult.start());
                 token.setEnd(matchResult.end());
 
                 if (activeToken != null) {
@@ -43,7 +45,7 @@ public class Tokenizer {
                 }
                 tokens.add(token);
             } else {
-                var indicator = matchResult.group().substring(0, 1);
+                String indicator = matchResult.group().substring(0, 1);
                 if (activeToken == null) {
                     activeToken = TokenFactory.getToken(indicator, null, matchResult.start());
                     tokens.add(activeToken);
@@ -51,7 +53,7 @@ public class Tokenizer {
                 }
 
                 //Move one deeper
-                var childToken = TokenFactory.getToken(indicator, activeToken, matchResult.start());
+                BaseToken childToken = TokenFactory.getToken(indicator, activeToken, matchResult.start());
                 activeToken.addChildren(childToken);
                 activeToken = childToken;
             }

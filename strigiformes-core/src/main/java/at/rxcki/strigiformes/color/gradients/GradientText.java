@@ -57,7 +57,7 @@ public class GradientText extends ColoredText {
         List<ColoredText> texts = new ArrayList<>();
 
         for (int i = 0; i < getText().length(); i++) {
-            var text = new ColoredText();
+            ColoredText text = new ColoredText();
             text.setText(String.valueOf(getText().charAt(i)));
             text.setColor(colors.get(i));
             if (getFormats() != null)

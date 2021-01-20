@@ -6,7 +6,9 @@ import lombok.Setter;
 import at.rxcki.strigiformes.exception.TokenizerException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 /**
@@ -23,10 +25,10 @@ public class MessageFormatTokenizer {
         List<FormatToken> tokens = new ArrayList<>();
         FormatToken activeToken = null;
 
-        var tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
+        Iterator<MatchResult> tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
         while (tokenIterator.hasNext()) {
-            var matchResult = tokenIterator.next();
-            var result = matchResult.group();
+            MatchResult matchResult = tokenIterator.next();
+            String result = matchResult.group();
 
             if (matchResult.group().equals("}")) {
                 if (activeToken == null) {

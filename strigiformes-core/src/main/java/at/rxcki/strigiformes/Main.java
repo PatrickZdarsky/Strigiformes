@@ -1,6 +1,7 @@
 package at.rxcki.strigiformes;
 
 import at.rxcki.strigiformes.parser.Parser;
+import org.json.JSONArray;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -14,14 +15,14 @@ public class Main {
 
 
         for (int i = 0; i < tries; i++) {
-            var s1 = "${cloud:sysPrefix}%{§cRxcki|run_command:/pi Rxcki} befindet sich auf §{grey}Server %{§{gold}Lobby-§{white}1|run_command:/server lobby1} mit 6 anderen Spielern!";
-            var colorParse = "§{green~random}I am a beautiful Gradient§{white}";
-            var componentParse = "%{§cRxc§4ki|run_command:/pi Rxcki|show_text:§8This §7is a test\n§6new line}";
+            String s1 = "${cloud:sysPrefix}%{§cRxcki|run_command:/pi Rxcki} befindet sich auf §{grey}Server %{§{gold}Lobby-§{white}1|run_command:/server lobby1} mit 6 anderen Spielern!";
+            String colorParse = "§{green~random}I am a beautiful Gradient§{white}";
+            String componentParse = "%{§cRxc§4ki|run_command:/pi Rxcki|show_text:§8This §7is a test\n§6new line}";
             long now = System.nanoTime();
-            var message = Parser.parse("%{§cNotch|run_command:/tp Notch|show_text:Teleport to Notch!}");
+            Message message = Parser.parse("%{§cNotch|run_command:/tp Notch|show_text:Teleport to Notch!}");
             time1 += ((System.nanoTime()-now)/1000000.0);
             now = System.nanoTime();
-            var json = message.toJson();
+            JSONArray json = message.toJson();
             System.out.println(json);
             time2 += ((System.nanoTime()-now)/1000000.0);
         }

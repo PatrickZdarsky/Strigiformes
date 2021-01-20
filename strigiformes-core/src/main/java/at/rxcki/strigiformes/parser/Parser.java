@@ -5,6 +5,8 @@ import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.component.ChatComponent;
 import at.rxcki.strigiformes.parser.token.ComponentToken;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -17,10 +19,10 @@ public class Parser {
         if (input.isEmpty())
             return null;
 
-        var message = new Message();
+        Message message = new Message();
 
         // Get all tokens except VariableTokens since these should have been already resolved
-        var tokens = Tokenizer.tokenize(input).stream()
+        List<BaseToken> tokens = Tokenizer.tokenize(input).stream()
                 .filter(baseToken -> (baseToken instanceof ComponentToken))
                 .collect(Collectors.toList());
 

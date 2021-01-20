@@ -11,14 +11,20 @@ Strigiformes is a minecraft translation framework. It can convert human-readable
 - Template-String caching
 - Utilities to localize various objects
 
-## Usage
-### The template string
+## The template string
 The template string is the human-readable form of a ChatComponent message. It is later being parsed to create the ChatComponent.
-#### Colors
+### Colors
+Strigiformes supports legacy color-codes, and the new RGB colors. It translates all colors to the 
 
-#### Variables
 
-#### Manual ChatComponent definition
+
+### Variables
+Variables are used to avoid having duplicate messages defined. Variables look like the following: `${NAMESPACE:VARIABLE_NAME}`
+
+Normally the tag contains only one value which defines the key. The parser will replace the tag with the translation-string with the specified key.
+If multiple TextProviders are created one can access strings from the other TextProvider by specifying the namespace through prefixing the name with it and using a colon to separate the two.
+
+### Manual ChatComponent definition
 To manually create a ChatComponent with a ClickEvent or HoverEvent you have to use the `%{...}` tag.
 The content of this tag is separated by `|` characters. You can escape the content delimiter by prefixing it with a \
 

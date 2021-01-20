@@ -31,7 +31,7 @@ public class Message {
     }
 
     public JSONArray toJson() {
-        var array = new JSONArray();
+        JSONArray array = new JSONArray();
         for (ChatComponent component : components)
             array.putAll(component.toJson());
 

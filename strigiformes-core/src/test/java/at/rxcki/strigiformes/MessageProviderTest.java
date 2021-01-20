@@ -21,11 +21,11 @@ class MessageProviderTest {
 
     @BeforeAll
     static void setUp() {
-        var textProvider = new ResourceBundleTextProvider(MessageProviderTest.class.getClassLoader(), "strigiformes");
+        ResourceBundleTextProvider textProvider = new ResourceBundleTextProvider(MessageProviderTest.class.getClassLoader(), "strigiformes");
         textProvider.addResourceBundle(Locale.ENGLISH);
         messageProvider = new MessageProvider(textProvider);
 
-        var provider2 = new ResourceBundleTextProvider(MessageProviderTest.class.getClassLoader(), "strigiformes2");
+        ResourceBundleTextProvider provider2 = new ResourceBundleTextProvider(MessageProviderTest.class.getClassLoader(), "strigiformes2");
         provider2.addResourceBundle(Locale.ENGLISH);
     }
 
