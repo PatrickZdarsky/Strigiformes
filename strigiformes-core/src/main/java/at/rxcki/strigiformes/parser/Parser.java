@@ -5,7 +5,8 @@ import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.component.ChatComponent;
 import at.rxcki.strigiformes.parser.token.ComponentToken;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
-import java.util.stream.Collectors;
+
+import java.util.ArrayList;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -19,10 +20,16 @@ public class Parser {
 
         var message = new Message();
 
+        var tokens = new ArrayList<BaseToken>();
+
+        var tokenized = Tokenizer.tokenize(input);
+
         // Get all tokens except VariableTokens since these should have been already resolved
-        var tokens = Tokenizer.tokenize(input).stream()
-                .filter(baseToken -> (baseToken instanceof ComponentToken))
-                .collect(Collectors.toList());
+        for (int i = 0; i < tokenized.size(); i++) {
+            var current = tokenized.get(i);
+            if (!(current instanceof ComponentToken)) continue;
+            tokens.add(tokenized.get(i));
+        }
 
         //Position up to when we have parsed the input
         int index = 0;
