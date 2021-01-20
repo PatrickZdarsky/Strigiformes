@@ -26,7 +26,6 @@ public class MessageFormatTokenizer {
         var tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
         while (tokenIterator.hasNext()) {
             var matchResult = tokenIterator.next();
-            var result = matchResult.group();
 
             if (matchResult.group().equals("}")) {
                 if (activeToken == null) {
@@ -34,7 +33,7 @@ public class MessageFormatTokenizer {
                     continue;
                 }
                 //Close the active token
-                activeToken.setEnd(matchResult.start()+1);
+                activeToken.setEnd(matchResult.start() + 1);
                 tokens.add(activeToken);
                 activeToken = null;
 
