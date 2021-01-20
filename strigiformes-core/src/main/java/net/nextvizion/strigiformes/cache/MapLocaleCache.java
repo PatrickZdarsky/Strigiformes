@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 /**
  * @author Patrick Zdarsky / Rxcki
+ *
+ * A simple cache backed by a HashMap
  */
 public class MapLocaleCache implements ILocaleCache {
 
