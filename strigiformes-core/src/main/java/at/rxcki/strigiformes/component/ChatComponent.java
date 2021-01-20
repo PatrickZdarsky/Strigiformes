@@ -291,7 +291,7 @@ public class ChatComponent {
                         hoverTexts.add(text);
                 }
 
-                var contents = new JSONArray();
+                JSONArray contents = new JSONArray();
                 //Why mojang? just why?
                 contents.put("");
 
