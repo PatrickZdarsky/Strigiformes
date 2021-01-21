@@ -2,6 +2,7 @@ package at.rxcki.strigiformes;
 
 import at.rxcki.strigiformes.color.ColorRegistry;
 import at.rxcki.strigiformes.component.ClickEvent;
+import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.text.ResourceBundleTextProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

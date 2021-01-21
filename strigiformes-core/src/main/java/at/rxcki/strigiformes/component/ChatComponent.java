@@ -183,6 +183,8 @@ public class ChatComponent {
                     debug("   Parsing gradient");
                     Color currColor = ColorRegistry.parse(tokenPart.substring(2, tildeIndex));
                     String gradientType = tokenPart.substring(tildeIndex + 1, tokenPart.length() - 1);
+                    if (gradientType.equals(""))
+                        gradientType = "linear";
 
                     //This token is a gradient start
                     if (currentText != null) {

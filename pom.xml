@@ -7,7 +7,7 @@
     <groupId>at.rxcki</groupId>
     <artifactId>Strigiformes</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <modules>
         <module>strigiformes-core</module>
         <module>strigiformes-examples</module>

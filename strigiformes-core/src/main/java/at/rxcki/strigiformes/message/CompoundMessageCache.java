@@ -19,7 +19,7 @@ import java.util.Map;
 public class CompoundMessageCache implements IMessageCache{
 
     private final MessageProvider messageProvider;
-    private List<CompoundMessageEntry> messageEntries = new ArrayList<>();
+    private final List<CompoundMessageEntry> messageEntries = new ArrayList<>();
 
     private final Map<Locale, Message> cache = new HashMap<>(5);
 
