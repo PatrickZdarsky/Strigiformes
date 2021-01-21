@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 
 @Getter
-public class ResourceBundleTextProvider extends TextProvider{
+public class ResourceBundleTextProvider extends TextProvider {
 
 	protected static final Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{\\w+}");
 
@@ -52,10 +52,9 @@ public class ResourceBundleTextProvider extends TextProvider{
 		return resourceBundle.getString(key);
 	}
 
-	public ResourceBundleCache addResourceBundle(Locale locale) {
+	public void addResourceBundle(Locale locale) {
 		ResourceBundleCache resourceBundleCache = new ResourceBundleCache(getNamespace(), locale,
 				classLoader);
 		loadedLocales.put(locale, resourceBundleCache);
-		return resourceBundleCache;
 	}
 }
