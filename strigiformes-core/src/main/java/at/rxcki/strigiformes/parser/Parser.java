@@ -7,8 +7,6 @@ import at.rxcki.strigiformes.parser.token.ComponentToken;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -16,7 +14,7 @@ import java.util.stream.Collectors;
 public class Parser {
 
     //At this point all variables are already resolved
-    public static Message parse(String input) {
+    public Message parse(String input) {
         if (input.isEmpty())
             return null;
 

@@ -19,7 +19,7 @@ public class Main {
             String colorParse = "§{green~random}I am a beautiful Gradient§{white}";
             String componentParse = "%{§cRxc§4ki|run_command:/pi Rxcki|show_text:§8This §7is a test\n§6new line}";
             long now = System.nanoTime();
-            Message message = Parser.parse("%{§cNotch|run_command:/tp Notch|show_text:Teleport to Notch!}");
+            Message message = new Parser().parse("%{§cNotch|run_command:/tp Notch|show_text:Teleport to Notch!}");
             time1 += ((System.nanoTime()-now)/1000000.0);
             now = System.nanoTime();
             JSONArray json = message.toJson();
