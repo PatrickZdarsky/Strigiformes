@@ -1,5 +1,6 @@
-package at.rxcki.strigiformes;
+package at.rxcki.strigiformes.message;
 
+import at.rxcki.strigiformes.MessageProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * Using this cache one can send messages composed of multiple translation strings to many different players
  */
 @RequiredArgsConstructor
-public class CompoundMessageCache {
+public class CompoundMessageCache implements IMessageCache{
 
     private final MessageProvider messageProvider;
     private List<CompoundMessageEntry> messageEntries = new ArrayList<>();

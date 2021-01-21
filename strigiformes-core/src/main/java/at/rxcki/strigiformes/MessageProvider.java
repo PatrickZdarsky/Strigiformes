@@ -1,7 +1,8 @@
 package at.rxcki.strigiformes;
 
+import at.rxcki.strigiformes.message.Message;
+import at.rxcki.strigiformes.message.MessageCache;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import at.rxcki.strigiformes.parser.Parser;
 import at.rxcki.strigiformes.text.TextProvider;
 

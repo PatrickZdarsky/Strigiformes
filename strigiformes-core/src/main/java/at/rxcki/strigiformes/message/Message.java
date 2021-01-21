@@ -1,4 +1,4 @@
-package at.rxcki.strigiformes;
+package at.rxcki.strigiformes.message;
 
 import lombok.Getter;
 import at.rxcki.strigiformes.component.ChatComponent;

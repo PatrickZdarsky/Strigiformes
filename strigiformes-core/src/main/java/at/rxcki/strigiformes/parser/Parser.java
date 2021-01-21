@@ -1,6 +1,6 @@
 package at.rxcki.strigiformes.parser;
 
-import at.rxcki.strigiformes.Message;
+import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.component.ChatComponent;
 import at.rxcki.strigiformes.parser.token.ComponentToken;

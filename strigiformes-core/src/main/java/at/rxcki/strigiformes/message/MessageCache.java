@@ -1,5 +1,6 @@
-package at.rxcki.strigiformes;
+package at.rxcki.strigiformes.message;
 
+import at.rxcki.strigiformes.MessageProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author Patrick Zdarsky / Rxcki
  */
 @AllArgsConstructor
-public class MessageCache {
+public class MessageCache implements IMessageCache {
 
     @Getter
     private final MessageProvider messageProvider;

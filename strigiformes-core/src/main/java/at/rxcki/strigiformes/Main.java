@@ -1,5 +1,6 @@
 package at.rxcki.strigiformes;
 
+import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.parser.Parser;
 import org.json.JSONArray;
 
