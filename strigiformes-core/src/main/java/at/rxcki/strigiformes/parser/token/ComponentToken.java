@@ -1,6 +1,7 @@
 package at.rxcki.strigiformes.parser.token;
 
 import at.rxcki.strigiformes.exception.ParserException;
+import at.rxcki.strigiformes.exception.TokenizerException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ComponentToken extends BaseToken {
     @Override
     public void addChildren(BaseToken baseToken) {
         if (baseToken instanceof ComponentToken) {
-            throw new ParserException("Tried to add ComponentTag as children for a ComponentTag");
+            throw new TokenizerException("Tried to add ComponentTag as children for a ComponentTag");
         }
 
         children.add(baseToken);

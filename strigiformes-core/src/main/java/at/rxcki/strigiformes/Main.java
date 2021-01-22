@@ -2,7 +2,11 @@ package at.rxcki.strigiformes;
 
 import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.parser.Parser;
+import at.rxcki.strigiformes.parser.token.MessageFormatTokenizer;
+import at.rxcki.strigiformes.text.TextProvider;
 import org.json.JSONArray;
+
+import java.util.Locale;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -10,8 +14,7 @@ import org.json.JSONArray;
 public class Main {
 
     public static void main(String[] args) {
-
-        int tries = 1;
+        int tries = 1000;
         double time1 = 0, time2 = 0;
 
 
@@ -24,7 +27,7 @@ public class Main {
             time1 += ((System.nanoTime()-now)/1000000.0);
             now = System.nanoTime();
             JSONArray json = message.toJson();
-            System.out.println(json);
+            //System.out.println(json);
             time2 += ((System.nanoTime()-now)/1000000.0);
         }
 

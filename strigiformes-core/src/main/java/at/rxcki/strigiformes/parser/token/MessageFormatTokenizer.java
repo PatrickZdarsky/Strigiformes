@@ -41,7 +41,7 @@ public class MessageFormatTokenizer {
 
             } else {
                 if (activeToken != null) {
-                    throw new TokenizerException("Double opening of a MessageFormat Token!");
+                    throw new TokenizerException("Double opening of a MessageFormat Token! '"+input+"'");
                 }
 
                 activeToken = new FormatToken(matchResult.start());

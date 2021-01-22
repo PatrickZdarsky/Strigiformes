@@ -106,18 +106,22 @@ public abstract class TextProvider {
      * A better solution for this is needed!
      */
 
-    private static String applyMessageFormat(String s, Locale locale, Object... arguments) {
+    public static String applyMessageFormat(String s, Locale locale, Object... arguments) {
         if (arguments.length == 0)
             return s;
 
+        //We need this offset because if we are replacing the MessageFormat tokens,
+        // the length of the initial token may not be the same as the inserted string
+        var offset = 0;
         for (MessageFormatTokenizer.FormatToken formatToken : MessageFormatTokenizer.tokenize(s)) {
             if (formatToken.getEnd() == 0)
                 continue; //Just ignore it,(this should be handled.... ---> for the future dev)
 
-            String part = s.substring(formatToken.getIndex(), formatToken.getEnd());
+            String part = s.substring(formatToken.getIndex()+offset, formatToken.getEnd()+offset);
 
             String formatted = new MessageFormat(part, locale).format(arguments);
-            s = replace(s, formatToken.getIndex(), formatToken.getEnd(), formatted);
+            s = replace(s, formatToken.getIndex()+offset, formatToken.getEnd()+offset, formatted);
+            offset += formatted.length()-part.length();
         }
 
         return s;
