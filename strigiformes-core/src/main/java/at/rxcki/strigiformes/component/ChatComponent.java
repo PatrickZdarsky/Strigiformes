@@ -79,13 +79,13 @@ public class ChatComponent {
             if (split.length > 1) {
                 for (int i = 1; i < split.length; i++) {
                     String[] dottedSplit = COLON_PATTERN.split(split[i]);
-                    ClickEvent.ClickAction clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0].toUpperCase());
+                    ClickEvent.ClickAction clickAction = ClickEvent.ClickAction.getAction(dottedSplit[0]);
                     debug(clickAction+"");
                     if (clickAction != null) {
-                        chatComponent.click(clickAction, dottedSplit[1]);
+                        chatComponent.click(clickAction, split[i].substring(dottedSplit[0].length()+1));
                         continue;
                     }
-                    HoverEvent.HoverAction hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0].toUpperCase());
+                    HoverEvent.HoverAction hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0]);
                     if (hoverAction != null) {
                         HoverEvent hoverEvent = new HoverEvent(hoverAction);
                         hoverEvent.setText(parseString(split[i].substring(dottedSplit[0].length()+1)));
