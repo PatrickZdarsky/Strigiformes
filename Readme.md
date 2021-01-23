@@ -81,3 +81,6 @@ This will create the following ChatComponent complete with a ClickEvent and Hove
 ## Todo
 - Improve MessageFormat implementation
 - Improve Exceptions to display the problematic part better
+- Fix issue where when you get a string from another namespace, and the translation-string 
+  contains variables the original textProvider should be used, currently the calling one is 
+  used which is not able to resolve the variables
