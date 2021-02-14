@@ -37,7 +37,7 @@ public abstract class TextProvider {
 
     protected abstract String resolveString0(String key, Locale locale);
 
-    String resolveString(String key, Locale locale) {
+    String resolveString(@NonNull String key, @NonNull Locale locale) {
         int dottedIndex = key.indexOf(':');
         if (dottedIndex >= 0) {
             String namespace = key.substring(0, dottedIndex);
