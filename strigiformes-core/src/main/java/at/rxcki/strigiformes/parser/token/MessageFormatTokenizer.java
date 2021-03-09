@@ -24,6 +24,7 @@ public class MessageFormatTokenizer {
     public static List<FormatToken> tokenize(String input) {
         List<FormatToken> tokens = new ArrayList<>();
         FormatToken activeToken = null;
+        int depth = 0;
 
         Iterator<MatchResult> tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
         while (tokenIterator.hasNext()) {
@@ -34,17 +35,20 @@ public class MessageFormatTokenizer {
                     //Ignore since this could very likely be the closing bracket of one of our tokens
                     continue;
                 }
+                depth--;
+                if (depth > 0)
+                    continue;
+
                 //Close the active token
                 activeToken.setEnd(matchResult.start() + 1);
                 tokens.add(activeToken);
                 activeToken = null;
 
             } else {
-                if (activeToken != null) {
-                    throw new TokenizerException("Double opening of a MessageFormat Token! '"+input+"'");
-                }
+                depth++;
 
-                activeToken = new FormatToken(matchResult.start());
+                if (activeToken == null)
+                    activeToken = new FormatToken(matchResult.start());
             }
         }
         return tokens;
