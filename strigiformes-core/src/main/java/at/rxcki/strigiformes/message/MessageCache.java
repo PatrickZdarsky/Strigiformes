@@ -1,7 +1,6 @@
 package at.rxcki.strigiformes.message;
 
 import at.rxcki.strigiformes.MessageProvider;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Map;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
-@AllArgsConstructor
 public class MessageCache implements IMessageCache {
 
     @Getter
@@ -22,6 +20,12 @@ public class MessageCache implements IMessageCache {
     private final Object[] arguments;
 
     private final Map<Locale, Message> cache = new HashMap<>(5);
+
+    public MessageCache(MessageProvider messageProvider, String key, Object... arguments) {
+        this.messageProvider = messageProvider;
+        this.key = key;
+        this.arguments = arguments;
+    }
 
     public Message getMessage(Locale locale) {
         return cache.computeIfAbsent(locale, (l) -> messageProvider.getMessage(key, locale, arguments));
