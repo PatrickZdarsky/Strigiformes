@@ -26,7 +26,7 @@ public class Tokenizer {
 
             if (matchResult.group().equals("}")) {
                 if (activeToken == null) {
-                    throw new TokenizerException("Found closing bracket without opening one '"+input+"'");
+                    throw new TokenizerException("Found closing bracket without opening one '"+input+"' at index "+matchResult.start());
                 }
                 //Close the active token
                 activeToken.setEnd(matchResult.start()+1);
