@@ -48,21 +48,20 @@ public class CompoundMessageCache implements IMessageCache{
     }
 
     public Message getMessage(Locale locale) {
-        return cache.computeIfAbsent(locale, this::generateMessage);
+        return cache.computeIfAbsent(locale, locale1 -> messageProvider.getParser().parse(generateMessage(locale1)));
     }
 
-    private Message generateMessage(Locale locale) {
+    public String generateMessage(Locale locale) {
         var compound = new StringBuilder();
 
         for (CompoundMessageEntry entry : messageEntries) {
             if (entry.getValue() != null)
                 compound.append(entry.getValue());
             else
-                compound.append(
-                        messageProvider.getTextProvider().format(entry.getTextData(), locale));
+                compound.append(messageProvider.getTextProvider().format(entry.getTextData(), locale));
         }
 
-        return messageProvider.getParser().parse(compound.toString());
+        return compound.toString();
     }
 
 
