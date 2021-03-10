@@ -1,6 +1,7 @@
 package at.rxcki.strigiformes.message;
 
 import at.rxcki.strigiformes.MessageProvider;
+import at.rxcki.strigiformes.text.TextData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,11 @@ public class CompoundMessageCache implements IMessageCache{
 
 
     public CompoundMessageCache addEntry(String key, Object... arguments) {
-        messageEntries.add(new CompoundMessageEntry(key, arguments));
+        return addEntry(new TextData(key, arguments));
+    }
+
+    public CompoundMessageCache addEntry(TextData textData) {
+        messageEntries.add(new CompoundMessageEntry(textData));
 
         return this;
     }
@@ -54,7 +59,7 @@ public class CompoundMessageCache implements IMessageCache{
                 compound.append(entry.getValue());
             else
                 compound.append(
-                        messageProvider.getTextProvider().format(entry.getKey(), locale, entry.getArguments()));
+                        messageProvider.getTextProvider().format(entry.getTextData(), locale));
         }
 
         return messageProvider.getParser().parse(compound.toString());
@@ -63,14 +68,12 @@ public class CompoundMessageCache implements IMessageCache{
 
     @Getter
     private static class CompoundMessageEntry {
-        private String key;
-        private Object[] arguments;
+        private TextData textData;
 
         private String value;
 
-        public CompoundMessageEntry(String key, Object[] arguments) {
-            this.key = key;
-            this.arguments = arguments;
+        public CompoundMessageEntry(TextData textData) {
+            this.textData = textData;
         }
 
         public CompoundMessageEntry(String value) {

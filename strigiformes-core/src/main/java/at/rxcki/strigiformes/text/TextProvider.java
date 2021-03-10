@@ -63,6 +63,10 @@ public abstract class TextProvider {
         return resolveVariables(locale, s);
     }
 
+    public String format(TextData textData, Locale locale) {
+        return format(textData.getKey(), locale, textData.getArguments());
+    }
+
     private String resolveVariables(Locale locale, String s) {
         //Resolve variables
         //Todo: Check for StackOverflowErrors
