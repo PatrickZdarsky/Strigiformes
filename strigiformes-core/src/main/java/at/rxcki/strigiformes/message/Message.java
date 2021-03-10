@@ -41,9 +41,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "components=" + components +
-                '}';
+        return toJson().toString();
     }
 
     @Override
