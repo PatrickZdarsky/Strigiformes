@@ -20,4 +20,16 @@ public class TranslatedObjectCache<T> {
     public T get(Locale locale) {
         return cache.computeIfAbsent(locale, supplier);
     }
+
+    public void clearCache() {
+        cache.clear();
+    }
+
+    public void invalidate(Locale locale) {
+        cache.remove(locale);
+    }
+
+    public Map<Locale, T> asMap() {
+        return cache;
+    }
 }
