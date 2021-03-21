@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>at.rxcki</groupId>
-    <artifactId>Strigiformes</artifactId>
+    <artifactId>strigiformes-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.2-SNAPSHOT</version>
     <modules>
-        <module>strigiformes-core</module>
+        <module>strigiformes</module>
         <module>strigiformes-examples</module>
     </modules>
 
