@@ -24,17 +24,17 @@ public class ResourceBundleExample {
 
         setup();
 
-        System.out.println(messageProvider.getMessage("testString", Locale.ENGLISH).toJson());
+        System.out.println(messageProvider.getMessage("testString", Locale.ENGLISH));
         //Use the MessageFormat to insert values
         System.out.println(messageProvider.getMessage("currentDate", Locale.ENGLISH,
-                Calendar.getInstance().getTime().getDay()).toJson());
+                Calendar.getInstance().getTime().getDay()).toString());
 
         //This could be another plugin or module also registering a MessageProvider
         setupAnother();
 
         //To access translations from the submodule the namespace has to be added to the key.
         //For example if we want to get the "prefix" string from the other module using our MessageProvider we add the namespace of it:
-        System.out.println(messageProvider.getMessage("submodule:prefix", Locale.ENGLISH).toJson());
+        System.out.println(messageProvider.getMessage("submodule:prefix", Locale.ENGLISH).toString());
     }
 
     private static void setup() {
