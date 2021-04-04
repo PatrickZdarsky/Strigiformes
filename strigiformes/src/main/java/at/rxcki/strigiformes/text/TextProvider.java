@@ -84,9 +84,7 @@ public abstract class TextProvider {
 
     public String format(String key, Locale locale, Object... arguments) {
         String s = localeCache.getLocaledString(locale, key, () -> resolveString(key, locale));
-        System.out.println(s);
         s =  applyMessageFormat(s, locale, arguments);
-        System.out.println(s);
 
         return resolveVariables(locale, s);
     }
