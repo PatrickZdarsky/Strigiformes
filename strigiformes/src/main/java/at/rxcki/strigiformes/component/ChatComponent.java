@@ -132,6 +132,7 @@ public class ChatComponent {
                 .filter(baseToken -> baseToken instanceof ColorToken)
                 .map(baseToken -> (ColorToken) baseToken)
                 .collect(Collectors.toList());
+        debug("Tokens: "+tokens.stream().map(colorToken -> colorToken.toString()).collect(Collectors.joining(", ")));
 
         int index = 0;
         //Check if there is text before the first color code
@@ -153,6 +154,23 @@ public class ChatComponent {
 
             if (format != null) {
                 debug("  Parsing format " + tokenPart);
+                if (format == TextFormat.RESET) {
+                    if (currentText == null) {
+                        debug("     Ignore Reset??? " + currentText);
+                        ColoredText newCurr = new ColoredText();
+                        currentText = newCurr;
+                    } else {
+                        currentText.setText(input.substring(index, colorToken.getIndex()));
+                        texts.add(currentText);
+                        debug("     Closed due to reset and created new, old: " + currentText);
+
+                        ColoredText newCurr = new ColoredText();
+                        currentText = newCurr;
+                    }
+                    index = colorToken.getEnd();
+                    continue;
+                }
+
                 if (currentText == null) {
                     debug("   Current is null");
                     currentText = new ColoredText();
@@ -220,6 +238,7 @@ public class ChatComponent {
                         }
                         currentText.setText(input.substring(index, colorToken.getIndex()));
                         texts.add(currentText);
+                        //Todo: Check if this double assignment of index messes things up
                         index = colorToken.getIndex();
                         debug("     Closed current " + currentText);
                     }
@@ -272,15 +291,20 @@ public class ChatComponent {
                 ((GradientText) currentText).setEndColor(currentText.getColor());
             }
 
-            currentText.setText(input.substring(index));
-            texts.add(currentText);
-            debug("Closed last "+currentText);
+            if (index < input.length() - 1) {
+                currentText.setText(input.substring(index));
+                texts.add(currentText);
+                debug("Closed last " + currentText);
+            } else {
+                debug("Ignored last empty text");
+            }
         }
 
         return texts;
     }
 
     private static void debug(String s) {
+        //This is only for debugging purposes
     }
 
     public JSONArray toJson() {

@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  */
 public class Tokenizer {
 
-    public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-Fk-oK-O]");
+    public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-Fk-oK-OrR]");
 
     public static List<BaseToken> tokenize(String input) {
         List<BaseToken> tokens = new ArrayList<>();

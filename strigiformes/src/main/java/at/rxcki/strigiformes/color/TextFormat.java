@@ -36,6 +36,7 @@ public enum TextFormat {
     ITALIC("o"),
     BOLD("l"),
     UNDERLINED("n"),
+    RESET("r"),
     OBFUSCATED("k");
 
     public static final TextFormat[] VALUES = values();
