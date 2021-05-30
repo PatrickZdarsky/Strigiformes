@@ -319,10 +319,35 @@ public class ChatComponent {
                 coloredTexts.add(coloredText);
         }
 
-        for (ColoredText coloredText : coloredTexts) {
+        //Convert the coloredtexts to MessageJson format
+        for (int i = 0; i < coloredTexts.size(); i++) {
+            ColoredText coloredText = coloredTexts.get(i);
             JSONObject json = coloredText.toJson();
             jsonArray.put(json);
 
+            //Properly disable formats
+            if (jsonArray.length() == 1) {
+                //This is the first array, so reset all other formats
+                //Todo: Maybe check the old component for the proper last formats
+                for (TextFormat format : TextFormat.VALUES) {
+                    if (format != TextFormat.RESET &&
+                            coloredText.getFormats() != null && !coloredText.getFormats().contains(format)) {
+                        json.put(format.name().toLowerCase(), false);
+                    }
+                }
+            } else {
+                //Check the difference to the last text
+                ColoredText last = coloredTexts.get(i-1);
+                if (last.getFormats() != null) {
+                    for (TextFormat format : last.getFormats()) {
+                        if (coloredText.getFormats() == null || !coloredText.getFormats().contains(format)) {
+                            json.put(format.name().toLowerCase(), false);
+                        }
+                    }
+                }
+            }
+
+            //Add the ClickEvent
             if (clickEvent != null) {
                 JSONObject clickJson = new JSONObject();
                 clickJson.put("action", clickEvent.getClickAction().name().toLowerCase());
@@ -330,6 +355,7 @@ public class ChatComponent {
                 json.put("clickEvent", clickJson);
             }
 
+            //Add the HoverEvent
             if (hoverEvent != null) {
                 JSONObject hoverJson = new JSONObject();
                 hoverJson.put("action", hoverEvent.getHoverAction().name().toLowerCase());

@@ -2,6 +2,7 @@ package at.rxcki.strigiformes;
 
 import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.parser.Parser;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,5 +37,14 @@ public class FormatTest {
         Message message = parser.parse("§6Gold§r");
 
         assertEquals(1, message.getComponents().get(0).getTextList().size());
+    }
+
+    @Test
+    void name() {
+        Parser parser = new Parser();
+        Message message = parser.parse("§lBold§rNotBold");
+
+        assertTrue((Boolean) ((JSONObject) message.toJson().get(0)).get("bold"));
+        assertFalse((Boolean) ((JSONObject) message.toJson().get(1)).get("bold"));
     }
 }
