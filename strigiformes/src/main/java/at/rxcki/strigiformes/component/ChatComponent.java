@@ -129,7 +129,6 @@ public class ChatComponent {
         debug("Parsing \""+ input +"\"");
         //We are parsing a normal text
         List<ColorToken> tokens = Tokenizer.tokenize(input).stream()
-                .filter(baseToken -> baseToken instanceof ColorToken)
                 .map(baseToken -> (ColorToken) baseToken)
                 .collect(Collectors.toList());
         debug("Tokens: "+tokens.stream().map(colorToken -> colorToken.toString()).collect(Collectors.joining(", ")));
@@ -291,7 +290,7 @@ public class ChatComponent {
                 ((GradientText) currentText).setEndColor(currentText.getColor());
             }
 
-            if (index < input.length() - 1) {
+            if (index < input.length()) {
                 currentText.setText(input.substring(index));
                 texts.add(currentText);
                 debug("Closed last " + currentText);

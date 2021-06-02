@@ -31,6 +31,13 @@ class MessageProviderTest {
     }
 
     @Test
+    void name() {
+        Message message = messageProvider.getMessage("testMultipart", Locale.ENGLISH, "ONE", "TWO");
+
+        assertEquals(4, message.getComponents().get(0).getTextList().size());
+    }
+
+    @Test
     void testSimpleMessage() {
         Message message = messageProvider.getMessage("test1", Locale.ENGLISH);
 

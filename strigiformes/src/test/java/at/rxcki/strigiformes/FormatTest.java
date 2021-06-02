@@ -40,7 +40,7 @@ public class FormatTest {
     }
 
     @Test
-    void name() {
+    void testProperFormatReset() {
         Parser parser = new Parser();
         Message message = parser.parse("§lBold§rNotBold");
 

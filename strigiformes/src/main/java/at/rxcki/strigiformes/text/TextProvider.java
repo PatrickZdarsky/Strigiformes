@@ -98,23 +98,29 @@ public abstract class TextProvider {
         //Todo: Check for StackOverflowErrors
 
         //Todo: Cache tokenizer result
+        int offset = 0;
         List<BaseToken> tokens = Tokenizer.tokenize(s);
         for (BaseToken baseToken : tokens) {
             if (!(baseToken instanceof VariableToken))
                 continue;
 
-            VariableTag variableTag = VariableTag.parse(s.substring(baseToken.getIndex(), baseToken.getEnd()));
+            VariableTag variableTag = VariableTag.parse(s.substring(baseToken.getIndex()+offset, baseToken.getEnd()+offset));
             if (variableTag == null)
                 continue;   //Todo add debug logging?
 
+            String replacement;
             if (variableTag.getNamespace() == null || variableTag.getNamespace().equalsIgnoreCase(namespace)) {
-                s = replace(s, baseToken.getIndex(), baseToken.getEnd(), getString(variableTag.getName(), locale));
+                replacement = getString(variableTag.getName(), locale);
+                s = replace(s, baseToken.getIndex()+offset, baseToken.getEnd()+offset, replacement);
             } else {
                 TextProvider textProvider = TextProviderRegistry.getProviderByNamespace(variableTag.getNamespace());
                 if (textProvider == null)
                     continue; //Todo add debug logging?
-                s = replace(s, baseToken.getIndex(), baseToken.getEnd(), textProvider.getString(variableTag.getName(), locale));
+                replacement = textProvider.getString(variableTag.getName(), locale);
+                s = replace(s, baseToken.getIndex()+offset, baseToken.getEnd()+offset, replacement);
             }
+            //Increase offset
+            offset += replacement.length() - (baseToken.getEnd()-baseToken.getIndex());
         }
 
         return s;
