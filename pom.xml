@@ -25,11 +25,11 @@
     <distributionManagement>
         <repository>
             <id>gitlab-maven</id>
-            <url>https://gitlab.madfix.me/api/v4/projects/106/packages/maven</url>
+            <url>https://gitlab.madfix.de/api/v4/projects/106/packages/maven</url>
         </repository>
         <snapshotRepository>
             <id>gitlab-maven</id>
-            <url>https://gitlab.madfix.me/api/v4/projects/106/packages/maven</url>
+            <url>https://gitlab.madfix.de/api/v4/projects/106/packages/maven</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
