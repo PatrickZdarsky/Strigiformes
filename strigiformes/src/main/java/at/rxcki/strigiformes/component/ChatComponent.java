@@ -31,6 +31,7 @@ import at.rxcki.strigiformes.color.TextFormat;
 import at.rxcki.strigiformes.color.gradients.GradientText;
 import at.rxcki.strigiformes.parser.token.ComponentToken;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import at.rxcki.strigiformes.parser.token.ColorToken;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
@@ -125,7 +126,7 @@ public class ChatComponent {
         return chatComponent;
     }
 
-    private static List<ColoredText> parseString(String input, List<ColorToken> containedTokens) {
+    private static List<ColoredText> parseString(String input, @NonNull List<ColorToken> containedTokens) {
         List<ColoredText> texts = new ArrayList<>();
 
         debug("Parsing \""+ input +"\"");

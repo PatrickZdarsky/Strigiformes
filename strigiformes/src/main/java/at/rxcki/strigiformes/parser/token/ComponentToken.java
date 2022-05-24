@@ -54,9 +54,8 @@ public class ComponentToken extends BaseToken {
     }
 
     public void normalizeIndices() {
-        int offset = index;
-        index = 0;
-        end = end - offset;
+        //Add 2 to the offset since the first two characters are always %{ wich don't count in the inner text
+        int offset = index + 2;
 
         for (BaseToken baseToken : children) {
             baseToken.index -= offset;

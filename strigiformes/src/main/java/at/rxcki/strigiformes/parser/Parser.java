@@ -83,7 +83,7 @@ public class Parser {
         if (index < input.length()-1) {
             String part = input.substring(index);
 
-            message.getComponents().add(ChatComponent.parse(part, null));
+            message.getComponents().add(ChatComponent.parse(part, Collections.emptyList()));
         }
 
         return message;

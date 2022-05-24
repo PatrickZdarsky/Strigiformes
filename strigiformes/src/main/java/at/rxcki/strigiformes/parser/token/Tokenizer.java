@@ -96,6 +96,19 @@ public class Tokenizer implements Iterable<BaseToken>{
         }
     }
 
+    /**
+     * Used to group ColorTokens into TokenGroups
+     * Todo: Maybe leave single Colortokens alone in order to reduce waste object creations
+     *
+     * Example:
+     *   |ColorToken|ColorToken|ColorToken|ComponentToken|ComponentToken|ColorToken|ComponentToken|ColorToken|
+     * is collected into:
+     *   |TokenGroup|ComponentToken|ComponentToken|TokenGroup|ComponentToken|TokenGroup|
+     *
+     * This operation modifies the existing tokens list, therefore is not creating an additional array.
+     * While grouping the tokens it is also keeping track of the positions of the tokens in the input text
+     * in order to re-use that data down the line
+     */
     public void groupTokens() {
         TokenGroup currentGroup = null;
 
