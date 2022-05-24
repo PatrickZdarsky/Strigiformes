@@ -174,7 +174,7 @@ public class ChatComponent {
                     debug("   Current is null");
                     currentText = new ColoredText();
                     currentText.addFormat(format);
-                    if (texts.size() > 0) {
+                    if (!texts.isEmpty()) {
                         debug("    Last is available");
                         //Set color and format from previous
                         ColoredText prevText = texts.get(texts.size() - 1);
@@ -190,15 +190,11 @@ public class ChatComponent {
                 if (index == colorToken.getIndex()) {
                     debug("   Current is not null but with empty text");
                     currentText.addFormat(format);
-                    index = colorToken.getEnd();
-                    continue;
                 } else {
                     debug("   Current.text is not null");
                     if (currentText instanceof GradientText) {
                         debug("    Current is gradient");
                         currentText.addFormat(format);
-                        index = colorToken.getEnd();
-                        continue;
                     } else {
                         String text = input.substring(index, colorToken.getIndex());
                         currentText.setText(text);
@@ -213,10 +209,9 @@ public class ChatComponent {
                         debug("    Closed current: " + currentText);
 
                         currentText = newCurr;
-                        index = colorToken.getEnd();
-                        continue;
                     }
                 }
+                index = colorToken.getEnd();
             } else {
                 debug("  Parsing colortag " + tokenPart);
                 //Todo: Improve detection logic and stuff
@@ -237,27 +232,18 @@ public class ChatComponent {
                         }
                         currentText.setText(input.substring(index, colorToken.getIndex()));
                         texts.add(currentText);
-                        //Todo: Check if this double assignment of index messes things up
-                        index = colorToken.getIndex();
+
                         debug("     Closed current " + currentText);
                     }
-                    GradientText newCurr = new GradientText();
-                    newCurr.setColor(currColor);
-                    newCurr.setGradientType(gradientType);
-                    index = colorToken.getEnd();
-                    debug("   Created new gradient " + newCurr);
+                    currentText = new GradientText(currColor, gradientType);
 
-                    currentText = newCurr;
-                    continue;
+                    debug("   Created new gradient " + currentText);
                 } else {
                     debug("   Parsing color");
                     Color currColor = ColorRegistry.parse(tokenPart);
                     if (currentText == null) {
-                        debug("    CurrentText is null creating new");
-                        currentText = new ColoredText();
-                        currentText.setColor(currColor);
-                        index = colorToken.getEnd();
-                        continue;
+                        debug("    CurrentText is null, creating new");
+                        currentText = new ColoredText(currColor);
                     } else {
                         debug("    CurrentText is not null");
                         if (currentText instanceof GradientText) {
@@ -266,7 +252,6 @@ public class ChatComponent {
                             //Close currentText
                             currentText.setText(input.substring(index, colorToken.getIndex()));
                             texts.add(currentText);
-                            index = colorToken.getEnd();
                             debug("     Closed gradient " + currentText);
                             currentText = null;
                         } else {
@@ -274,14 +259,11 @@ public class ChatComponent {
                             texts.add(currentText);
                             debug("     Closed color and created new, old: " + currentText);
 
-                            ColoredText newCurr = new ColoredText();
-                            newCurr.setColor(currColor);
-                            currentText = newCurr;
-                            index = colorToken.getEnd();
-                            continue;
+                            currentText = new ColoredText(currColor);
                         }
                     }
                 }
+                index = colorToken.getEnd();
             }
         }
         if (currentText != null) {

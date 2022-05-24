@@ -48,6 +48,10 @@ public class ColoredText {
     @Getter
     private List<TextFormat> formats;
 
+    public ColoredText(Color color) {
+        this.color = color;
+    }
+
     public ColoredText(String text) {
         this.text = text;
     }

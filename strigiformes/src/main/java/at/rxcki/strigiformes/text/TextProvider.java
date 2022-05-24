@@ -27,6 +27,7 @@ package at.rxcki.strigiformes.text;
 
 import at.rxcki.strigiformes.cache.ILocaleCache;
 import at.rxcki.strigiformes.cache.MapLocaleCache;
+import at.rxcki.strigiformes.exception.NamespaceNotFoundException;
 import at.rxcki.strigiformes.parser.VariableTag;
 import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.parser.token.MessageFormatTokenizer;
@@ -68,8 +69,12 @@ public abstract class TextProvider {
             String namespace = key.substring(0, dottedIndex);
             String name = key.substring(dottedIndex+1);
 
-            //Todo: Check if a provider with this namespace exists
-            return TextProviderRegistry.getProviderByNamespace(namespace).resolveString(name, locale);
+
+            var otherProvider = TextProviderRegistry.getProviderByNamespace(namespace).resolveString(name, locale);
+            if (otherProvider == null)
+                throw new NamespaceNotFoundException(namespace);
+
+            return otherProvider;
         }
 
         return localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));

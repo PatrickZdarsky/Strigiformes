@@ -46,8 +46,9 @@ public class GradientText extends ColoredText {
     private Color endColor;
     private String gradientType;
 
-    public GradientText(Color color, String text) {
-        super(color, text);
+    public GradientText(Color startColor, String gradientType) {
+        super(startColor, null);
+        this.gradientType = gradientType;
     }
 
     @Override
