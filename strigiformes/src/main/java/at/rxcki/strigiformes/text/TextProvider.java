@@ -99,7 +99,7 @@ public abstract class TextProvider {
 
         //Todo: Cache tokenizer result
         int offset = 0;
-        List<BaseToken> tokens = Tokenizer.tokenize(s);
+        List<BaseToken> tokens = new Tokenizer(s).getTokens();
         for (BaseToken baseToken : tokens) {
             if (!(baseToken instanceof VariableToken))
                 continue;

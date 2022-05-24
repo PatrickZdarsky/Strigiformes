@@ -28,10 +28,14 @@ package at.rxcki.strigiformes.parser;
 import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.component.ChatComponent;
+import at.rxcki.strigiformes.parser.token.ColorToken;
 import at.rxcki.strigiformes.parser.token.ComponentToken;
+import at.rxcki.strigiformes.parser.token.TokenGroup;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Patrick Zdarsky / Rxcki
@@ -45,23 +49,32 @@ public class Parser {
 
         Message message = new Message();
 
-        List<BaseToken> tokens = Tokenizer.tokenize(input);
-        // Get all tokens except VariableTokens since these should have been already resolved
-        tokens.removeIf(baseToken -> !(baseToken instanceof ComponentToken));
-
+        Tokenizer tokenizer = new Tokenizer(input);
+        tokenizer.groupTokens();
         //Position up to when we have parsed the input
         int index = 0;
 
-        for (BaseToken baseToken : tokens) {
-            //Parse text in front of component
+        for (BaseToken baseToken : tokenizer) {
+            //Parse text in front of component, this text does not contain other components
             if (baseToken.getIndex() > index) {
                 String part = input.substring(index, baseToken.getIndex());
 
-                message.getComponents().add(ChatComponent.parse(part));
+                message.getComponents().add(ChatComponent.parse(part, Collections.emptyList()));
             }
+
             //Parse component
             String part = input.substring(baseToken.getIndex(), baseToken.getEnd());
-            message.getComponents().add(ChatComponent.parse(part));
+            List<ColorToken> containedTokens = null;
+            if (baseToken instanceof ComponentToken) {
+                ((ComponentToken) baseToken).normalizeIndices();
+                containedTokens = ((ComponentToken) baseToken).getChildren().stream().map(token -> (ColorToken) token).collect(Collectors.toList());
+            } else if (baseToken instanceof TokenGroup) {
+                ((TokenGroup) baseToken).normalizeIndices();
+                containedTokens = ((TokenGroup) baseToken).getTokens().stream().map(token -> (ColorToken) token).collect(Collectors.toList());
+            }
+
+
+            message.getComponents().add(ChatComponent.parse(part, containedTokens));
 
             index = baseToken.getEnd();
         }
@@ -70,7 +83,7 @@ public class Parser {
         if (index < input.length()-1) {
             String part = input.substring(index);
 
-            message.getComponents().add(ChatComponent.parse(part));
+            message.getComponents().add(ChatComponent.parse(part, null));
         }
 
         return message;

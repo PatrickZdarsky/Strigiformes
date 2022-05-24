@@ -26,6 +26,7 @@
 package at.rxcki.strigiformes.parser.token;
 
 import at.rxcki.strigiformes.exception.TokenizerException;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,12 +37,22 @@ import java.util.regex.Pattern;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
-public class Tokenizer {
-
+public class Tokenizer implements Iterable<BaseToken>{
     public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-Fk-oK-OrR]");
 
-    public static List<BaseToken> tokenize(String input) {
-        List<BaseToken> tokens = new ArrayList<>();
+    @Getter
+    private final List<BaseToken> tokens;
+
+    private final int textLength;
+
+    public Tokenizer(String input) {
+        tokens = new ArrayList<>();
+        textLength = input.length();
+
+        tokenize(input);
+    }
+
+    private void tokenize(String input) {
         BaseToken activeToken = null;
 
         Iterator<MatchResult> tokenIterator = TOKEN_EXTRACTOR.matcher(input).results().iterator();
@@ -83,6 +94,44 @@ public class Tokenizer {
                 activeToken = childToken;
             }
         }
-        return tokens;
+    }
+
+    public void groupTokens() {
+        TokenGroup currentGroup = null;
+
+        int locationInText = 0;
+        for (int i = 0; i < tokens.size(); i++) {
+            var token = tokens.get(i);
+
+            if (token instanceof ComponentToken) {
+                if (currentGroup != null) {
+                    currentGroup.setEnd(token.getIndex());
+                    tokens.add(i++, currentGroup);
+                    currentGroup = null;
+                }
+
+                locationInText = token.getEnd();
+                continue;
+            }
+
+            if (currentGroup == null)
+                currentGroup = new TokenGroup(locationInText);
+
+            currentGroup.addToken(token);
+
+            //Remove the token from the list and reduce the index of the loop to not skip the next element
+            tokens.remove(i--);
+        }
+
+        //If there is a group which has not been closed by a component => add it
+        if (currentGroup != null) {
+            currentGroup.setEnd(textLength);
+            tokens.add(currentGroup);
+        }
+    }
+
+    @Override
+    public Iterator<BaseToken> iterator() {
+        return tokens.iterator();
     }
 }

@@ -27,6 +27,7 @@ package at.rxcki.strigiformes.examples;
 
 import at.rxcki.strigiformes.MessageProvider;
 import at.rxcki.strigiformes.color.ColorRegistry;
+import at.rxcki.strigiformes.parser.Parser;
 import at.rxcki.strigiformes.text.ResourceBundleTextProvider;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +47,13 @@ public class ResourceBundleExample {
 
         ColorRegistry.useLegacyColors = true;
          */
+
+        var message = new Parser().parse("This §fis a %{§aTest|run_command:/pi Rxcki} §4message.");
+
+        System.out.println(message);
+
+        if (true)
+            return;
 
         setup();
 

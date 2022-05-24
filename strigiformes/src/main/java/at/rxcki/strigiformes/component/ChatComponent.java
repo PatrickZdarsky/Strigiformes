@@ -29,6 +29,7 @@ import at.rxcki.strigiformes.color.ColorRegistry;
 import at.rxcki.strigiformes.color.ColoredText;
 import at.rxcki.strigiformes.color.TextFormat;
 import at.rxcki.strigiformes.color.gradients.GradientText;
+import at.rxcki.strigiformes.parser.token.ComponentToken;
 import lombok.Getter;
 import lombok.Setter;
 import at.rxcki.strigiformes.parser.token.ColorToken;
@@ -57,7 +58,7 @@ public class ChatComponent {
     /**
      * Marks if this chat-component was generated or if it was explicitly created
      */
-    @Getter @Setter
+    @Getter
     private boolean generated;
     @Getter
     private ClickEvent clickEvent;
@@ -89,18 +90,19 @@ public class ChatComponent {
      * @param input
      * @return
      */
-    public static ChatComponent parse(String input) {
+    public static ChatComponent parse(String input, List<ColorToken> containedTokens) {
         ChatComponent chatComponent = new ChatComponent();
+
         if (!input.startsWith("%{")) {
-            chatComponent.setGenerated(true);
-            chatComponent.setTextList(parseString(input));
+            chatComponent.generated = true;
+            chatComponent.setTextList(parseString(input, containedTokens));
         } else {
             String innerPart = input.substring(2, input.length()-1);
             debug("Decoding declared component: "+innerPart);
 
             //Split by | but ignore | which are disabled by \
             String[] split = PIPE_SPLIT_PATTERN.split(innerPart);
-            chatComponent.setTextList(parseString(split[0]));
+            chatComponent.setTextList(parseString(split[0], containedTokens));
             if (split.length > 1) {
                 for (int i = 1; i < split.length; i++) {
                     String[] dottedSplit = COLON_PATTERN.split(split[i]);
@@ -113,7 +115,7 @@ public class ChatComponent {
                     HoverEvent.HoverAction hoverAction = HoverEvent.HoverAction.getAction(dottedSplit[0]);
                     if (hoverAction != null) {
                         HoverEvent hoverEvent = new HoverEvent(hoverAction);
-                        hoverEvent.setText(parseString(split[i].substring(dottedSplit[0].length()+1)));
+                        hoverEvent.setText(parseString(split[i].substring(dottedSplit[0].length()+1), containedTokens));
                         chatComponent.hover(hoverEvent);
                     }
                 }
@@ -123,30 +125,25 @@ public class ChatComponent {
         return chatComponent;
     }
 
-    private static List<ColoredText> parseString(String input) {
+    private static List<ColoredText> parseString(String input, List<ColorToken> containedTokens) {
         List<ColoredText> texts = new ArrayList<>();
 
         debug("Parsing \""+ input +"\"");
-        //We are parsing a normal text
-        List<ColorToken> tokens = Tokenizer.tokenize(input).stream()
-                .map(baseToken -> (ColorToken) baseToken)
-                .collect(Collectors.toList());
-        debug("Tokens: "+tokens.stream().map(colorToken -> colorToken.toString()).collect(Collectors.joining(", ")));
+        debug("Tokens: "+containedTokens.stream().map(colorToken -> colorToken.toString()).collect(Collectors.joining(", ")));
 
         int index = 0;
         //Check if there is text before the first color code
-        if (tokens.size() == 0 || tokens.get(0).getIndex() > 0) {
+        if (containedTokens.size() == 0 || containedTokens.get(0).getIndex() > 0) {
             //Todo: Maybe insert the color from the last ChatComponent?
-            int end = tokens.size() > 0 ? tokens.get(0).getIndex() : input.length();
-            texts.add(
-                    new ColoredText(input.substring(0, end)));
+            int end = containedTokens.size() > 0 ? containedTokens.get(0).getIndex() : input.length();
+            texts.add(new ColoredText(input.substring(0, end)));
             index = end;
             debug("  Added beginning text up to "+index +" text=\""+ input.substring(0, end)+"\"");
         }
 
 
         ColoredText currentText = null;
-        for (ColorToken colorToken : tokens) {
+        for (ColorToken colorToken : containedTokens) {
             String tokenPart = input.substring(colorToken.getIndex(), colorToken.getEnd());
 
             TextFormat format = TextFormat.getFormat(tokenPart);

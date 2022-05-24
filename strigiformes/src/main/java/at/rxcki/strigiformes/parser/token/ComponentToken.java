@@ -25,8 +25,8 @@
 
 package at.rxcki.strigiformes.parser.token;
 
-import at.rxcki.strigiformes.exception.ParserException;
 import at.rxcki.strigiformes.exception.TokenizerException;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class ComponentToken extends BaseToken {
 
+    @Getter
     private final List<BaseToken> children;
 
     public ComponentToken(BaseToken parent, int index) {
@@ -50,6 +51,17 @@ public class ComponentToken extends BaseToken {
         }
 
         children.add(baseToken);
+    }
+
+    public void normalizeIndices() {
+        int offset = index;
+        index = 0;
+        end = end - offset;
+
+        for (BaseToken baseToken : children) {
+            baseToken.index -= offset;
+            baseToken.end -= offset;
+        }
     }
 
     @Override
