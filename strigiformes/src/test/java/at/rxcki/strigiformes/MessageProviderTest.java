@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -57,6 +58,7 @@ class MessageProviderTest {
         Message message = messageProvider.getMessage("test1", Locale.ENGLISH);
 
         assertEquals("[{\"text\":\"sadasdasd\"}]", message.toJson().toString());
+        assertTrue(message.toJson().toString().equals(message.toString()));
     }
 
     @Test

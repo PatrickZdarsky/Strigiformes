@@ -2,8 +2,7 @@ package at.rxcki.strigiformes.parser.token;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -28,7 +27,8 @@ class TokenFactoryTest {
     }
 
     @Test
+
     void testInvalidToken() {
-        assertNull(TokenFactory.getToken('k', null, 0));
+        assertThrows(IllegalStateException.class, () -> TokenFactory.getToken('k', null, 0));
     }
 }
