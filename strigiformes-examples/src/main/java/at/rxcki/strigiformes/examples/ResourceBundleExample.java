@@ -45,7 +45,7 @@ public class ResourceBundleExample {
         /*
         To use the legacy colors simply add:
 
-        ColorRegistry.useLegacyColors = true;
+        => ColorRegistry.useLegacyColors = true;
          */
 
         var message = new Parser().parse("This §fis a %{§aTest|run_command:/pi Rxcki} §4message.");

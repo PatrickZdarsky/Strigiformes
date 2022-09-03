@@ -25,9 +25,9 @@
 
 package at.rxcki.strigiformes.parser;
 
+import at.rxcki.strigiformes.exception.ParserException;
 import lombok.Getter;
 import lombok.NonNull;
-import at.rxcki.strigiformes.exception.ParserException;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 @Getter
 public class VariableTag {
 
-    private final static Pattern VARIABLE_COMPONENT_BRACE_PATTERN = Pattern.compile("^\\$\\{(\\w*:)?(\\w*)}$");
+    private static final Pattern VARIABLE_COMPONENT_BRACE_PATTERN = Pattern.compile("^\\$\\{(\\w*:)?(\\w*)}$");
 
     private final String namespace;
     private final String name;

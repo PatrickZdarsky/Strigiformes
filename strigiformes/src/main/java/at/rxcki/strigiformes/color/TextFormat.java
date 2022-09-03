@@ -39,7 +39,7 @@ public enum TextFormat {
     RESET("r"),
     OBFUSCATED("k");
 
-    public static final TextFormat[] VALUES = values();
+    public static final TextFormat[] CACHED_VALUES = values();
 
     @Getter
     private final String code;
@@ -52,7 +52,7 @@ public enum TextFormat {
         //Parse simple legacy formatting code
         if (code.startsWith("§")) {
             code = code.substring(1); //Remove leading §
-            for (TextFormat textFormat : VALUES)
+            for (TextFormat textFormat : CACHED_VALUES)
                 if (textFormat.getCode().equalsIgnoreCase(code))
                     return textFormat;
             return null;

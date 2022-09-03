@@ -37,6 +37,8 @@ public class TextProviderRegistry {
 
     private final static Map<String, TextProvider> providers = new HashMap<>();
 
+    private TextProviderRegistry() {}
+
     public static void registerProvider(TextProvider textProvider) {
         if (providers.containsKey(textProvider.getNamespace().toLowerCase())) {
             throw new IllegalStateException("Tried to register already existing namespace");

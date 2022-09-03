@@ -44,6 +44,8 @@ public final class GradientRegistry {
         addGenerator("random", new RandomGradientGenerator());
     }
 
+    private GradientRegistry() {}
+
     public static GradientGenerator getGenerator(String name) {
         return gradientGenerators.get(name.toLowerCase(Locale.ROOT));
     }

@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Patrick Zdarsky / Rxcki
  */
 
-public class FormatTest {
+class FormatTest {
 
     @Test
-    public void testSimpleReset() {
+    void testSimpleReset() {
         Parser parser = new Parser();
         Message message = parser.parse("§6Test §rnormal");
 

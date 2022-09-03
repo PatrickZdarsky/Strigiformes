@@ -25,10 +25,10 @@
 
 package at.rxcki.strigiformes.text;
 
-import lombok.Getter;
-import lombok.Setter;
 import at.rxcki.strigiformes.cache.NOPCache;
 import at.rxcki.strigiformes.util.ResourceBundleCache;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Locale;

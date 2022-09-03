@@ -25,9 +25,9 @@
 
 package at.rxcki.strigiformes.component;
 
+import at.rxcki.strigiformes.color.ColoredText;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import at.rxcki.strigiformes.color.ColoredText;
 
 import java.util.List;
 
@@ -48,10 +48,10 @@ public class HoverEvent {
     public enum HoverAction {
         SHOW_TEXT;
 
-        public static final HoverAction[] VALUES = values();
+        public static final HoverAction[] CACHED_VALUES = values();
 
         public static HoverAction getAction(String name) {
-            for (HoverAction hoverAction : VALUES)
+            for (HoverAction hoverAction : CACHED_VALUES)
                 if (hoverAction.name().equalsIgnoreCase(name))
                     return hoverAction;
             return null;

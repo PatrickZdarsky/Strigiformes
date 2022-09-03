@@ -81,6 +81,8 @@ public final class ColorRegistry {
         addColor("white", new Color(16777215), true);
     }
 
+    private ColorRegistry() {}
+
     public static Color getColor(String name) {
         return colors.getOrDefault(name.toLowerCase(Locale.ROOT), Color.getColor(name));
     }

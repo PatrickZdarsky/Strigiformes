@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 /**
  * @author Patrick Zdarsky / Rxcki
  */
-public class Tokenizer implements Iterable<BaseToken>{
+public class Tokenizer implements Iterable<BaseToken> {
     public static final Pattern TOKEN_EXTRACTOR = Pattern.compile("[§$%]\\{|}|§[0-9a-fA-Fk-oK-OrR]");
 
     @Getter

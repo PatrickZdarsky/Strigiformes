@@ -30,6 +30,8 @@ package at.rxcki.strigiformes.parser.token;
  */
 public class TokenFactory {
 
+    private TokenFactory() {}
+
     public static BaseToken getToken(char indicator, BaseToken parent, int index) {
         switch (indicator) {
             case '$':
@@ -38,7 +40,8 @@ public class TokenFactory {
                 return new ComponentToken(parent,index);
             case '§':
                 return new ColorToken(parent,index);
+            default:
+                throw new IllegalStateException("Unexpected value: " + indicator);
         }
-        return null;
     }
 }

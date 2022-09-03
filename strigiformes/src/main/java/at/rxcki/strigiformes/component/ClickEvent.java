@@ -48,10 +48,10 @@ public class ClickEvent {
         CHANGE_PAGE,
         COPY_TO_CLIPBOARD;
 
-        public static final ClickAction[] VALUES = values();
+        public static final ClickAction[] CACHED_VALUES = values();
 
         public static ClickAction getAction(String name) {
-            for (ClickAction clickAction : VALUES)
+            for (ClickAction clickAction : CACHED_VALUES)
                 if (clickAction.name().equalsIgnoreCase(name))
                     return clickAction;
             return null;

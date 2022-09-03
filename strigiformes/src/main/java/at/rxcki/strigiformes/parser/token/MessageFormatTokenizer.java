@@ -28,7 +28,6 @@ package at.rxcki.strigiformes.parser.token;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import at.rxcki.strigiformes.exception.TokenizerException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -37,14 +37,14 @@ import java.util.Random;
  */
 public class RandomGradientGenerator implements GradientGenerator {
 
-    private final Random RANDOM = new Random();
+    private final Random random = new Random();
 
     @Override
     public List<Color> getGradient(String string, Color from, Color to) {
         List<Color> colors = new ArrayList<>();
 
         for (int i = 0; i < string.length(); i++) {
-            colors.add(new Color(RANDOM.nextInt(256), RANDOM.nextInt(256), RANDOM.nextInt(256)));
+            colors.add(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
         }
 
         return colors;

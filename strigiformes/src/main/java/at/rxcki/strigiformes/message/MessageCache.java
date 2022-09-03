@@ -61,7 +61,7 @@ public class MessageCache implements IMessageCache {
     public Message getMessage(Locale locale) {
         if (enableCache)
             return cache.computeIfAbsent(locale,
-                    (l) -> messageProvider.getMessage(textData.getKey(), locale, textData.getArguments()));
+                    l -> messageProvider.getMessage(textData.getKey(), locale, textData.getArguments()));
         else
             return messageProvider.getMessage(textData.getKey(), locale, textData.getArguments());
     }

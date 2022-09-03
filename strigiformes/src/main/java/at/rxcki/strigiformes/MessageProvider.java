@@ -27,9 +27,9 @@ package at.rxcki.strigiformes;
 
 import at.rxcki.strigiformes.message.Message;
 import at.rxcki.strigiformes.message.MessageCache;
-import lombok.Getter;
 import at.rxcki.strigiformes.parser.Parser;
 import at.rxcki.strigiformes.text.TextProvider;
+import lombok.Getter;
 
 import java.util.Locale;
 

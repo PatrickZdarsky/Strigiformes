@@ -29,12 +29,9 @@ import at.rxcki.strigiformes.color.ColorRegistry;
 import at.rxcki.strigiformes.color.ColoredText;
 import at.rxcki.strigiformes.color.TextFormat;
 import at.rxcki.strigiformes.color.gradients.GradientText;
-import at.rxcki.strigiformes.parser.token.ComponentToken;
+import at.rxcki.strigiformes.parser.token.ColorToken;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import at.rxcki.strigiformes.parser.token.ColorToken;
-import at.rxcki.strigiformes.parser.token.Tokenizer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -134,9 +131,9 @@ public class ChatComponent {
 
         int index = 0;
         //Check if there is text before the first color code
-        if (containedTokens.size() == 0 || containedTokens.get(0).getIndex() > 0) {
+        if (containedTokens.isEmpty() || containedTokens.get(0).getIndex() > 0) {
             //Todo: Maybe insert the color from the last ChatComponent?
-            int end = containedTokens.size() > 0 ? containedTokens.get(0).getIndex() : input.length();
+            int end = containedTokens.isEmpty() ? input.length() : containedTokens.get(0).getIndex();
             texts.add(new ColoredText(input.substring(0, end)));
             index = end;
             debug("  Added beginning text up to "+index +" text=\""+ input.substring(0, end)+"\"");
@@ -172,7 +169,7 @@ public class ChatComponent {
                     debug("   Current is null");
                     currentText = new ColoredText();
                     currentText.addFormat(format);
-                    if (texts.size() > 0) {
+                    if (!texts.isEmpty()) {
                         debug("    Last is available");
                         //Set color and format from previous
                         ColoredText prevText = texts.get(texts.size() - 1);
@@ -189,14 +186,12 @@ public class ChatComponent {
                     debug("   Current is not null but with empty text");
                     currentText.addFormat(format);
                     index = colorToken.getEnd();
-                    continue;
                 } else {
                     debug("   Current.text is not null");
                     if (currentText instanceof GradientText) {
                         debug("    Current is gradient");
                         currentText.addFormat(format);
                         index = colorToken.getEnd();
-                        continue;
                     } else {
                         String text = input.substring(index, colorToken.getIndex());
                         currentText.setText(text);
@@ -212,7 +207,6 @@ public class ChatComponent {
 
                         currentText = newCurr;
                         index = colorToken.getEnd();
-                        continue;
                     }
                 }
             } else {
@@ -235,8 +229,6 @@ public class ChatComponent {
                         }
                         currentText.setText(input.substring(index, colorToken.getIndex()));
                         texts.add(currentText);
-                        //Todo: Check if this double assignment of index messes things up
-                        index = colorToken.getIndex();
                         debug("     Closed current " + currentText);
                     }
                     GradientText newCurr = new GradientText();
@@ -246,7 +238,6 @@ public class ChatComponent {
                     debug("   Created new gradient " + newCurr);
 
                     currentText = newCurr;
-                    continue;
                 } else {
                     debug("   Parsing color");
                     Color currColor = ColorRegistry.parse(tokenPart);
@@ -255,7 +246,6 @@ public class ChatComponent {
                         currentText = new ColoredText();
                         currentText.setColor(currColor);
                         index = colorToken.getEnd();
-                        continue;
                     } else {
                         debug("    CurrentText is not null");
                         if (currentText instanceof GradientText) {
@@ -276,7 +266,6 @@ public class ChatComponent {
                             newCurr.setColor(currColor);
                             currentText = newCurr;
                             index = colorToken.getEnd();
-                            continue;
                         }
                     }
                 }
@@ -326,7 +315,7 @@ public class ChatComponent {
             if (jsonArray.length() == 1) {
                 //This is the first array, so reset all other formats
                 //Todo: Maybe check the old component for the proper last formats
-                for (TextFormat format : TextFormat.VALUES) {
+                for (TextFormat format : TextFormat.CACHED_VALUES) {
                     if (format != TextFormat.RESET &&
                             coloredText.getFormats() != null && !coloredText.getFormats().contains(format)) {
                         json.put(format.name().toLowerCase(), false);

@@ -25,10 +25,10 @@
 
 package at.rxcki.strigiformes.color.gradients;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import at.rxcki.strigiformes.color.ColoredText;
 import at.rxcki.strigiformes.color.TextFormat;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 
 import java.awt.Color;

@@ -26,7 +26,6 @@
 package at.rxcki.strigiformes.parser.token;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -42,12 +41,12 @@ public abstract class BaseToken {
     @Getter @Setter
     protected int end;
 
-    public BaseToken(BaseToken parent, int index) {
+    protected BaseToken(BaseToken parent, int index) {
         this.parent = parent;
         this.index = index;
     }
 
-    public BaseToken() {
+    protected BaseToken() {
         parent = null;
     }
 

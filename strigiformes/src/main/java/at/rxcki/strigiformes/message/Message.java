@@ -25,8 +25,8 @@
 
 package at.rxcki.strigiformes.message;
 
-import lombok.Getter;
 import at.rxcki.strigiformes.component.ChatComponent;
+import lombok.Getter;
 import org.json.JSONArray;
 
 import java.util.ArrayList;

@@ -30,10 +30,10 @@ import at.rxcki.strigiformes.cache.MapLocaleCache;
 import at.rxcki.strigiformes.parser.VariableTag;
 import at.rxcki.strigiformes.parser.token.BaseToken;
 import at.rxcki.strigiformes.parser.token.MessageFormatTokenizer;
-import lombok.Getter;
-import lombok.NonNull;
 import at.rxcki.strigiformes.parser.token.Tokenizer;
 import at.rxcki.strigiformes.parser.token.VariableToken;
+import lombok.Getter;
+import lombok.NonNull;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -48,13 +48,13 @@ public abstract class TextProvider {
     private final String namespace;
     protected final ILocaleCache localeCache;
 
-    public TextProvider(@NonNull String namespace) {
+    protected TextProvider(@NonNull String namespace) {
         this.namespace = namespace;
         localeCache = new MapLocaleCache();
         TextProviderRegistry.registerProvider(this);
     }
 
-    public TextProvider(@NonNull String namespace, @NonNull ILocaleCache cache) {
+    protected TextProvider(@NonNull String namespace, @NonNull ILocaleCache cache) {
         this.namespace = namespace;
         this.localeCache = cache;
         TextProviderRegistry.registerProvider(this);
@@ -65,11 +65,11 @@ public abstract class TextProvider {
     String resolveString(@NonNull String key, @NonNull Locale locale) {
         int dottedIndex = key.indexOf(':');
         if (dottedIndex >= 0) {
-            String namespace = key.substring(0, dottedIndex);
+            String keyNamespace = key.substring(0, dottedIndex);
             String name = key.substring(dottedIndex+1);
 
             //Todo: Check if a provider with this namespace exists
-            return TextProviderRegistry.getProviderByNamespace(namespace).resolveString(name, locale);
+            return TextProviderRegistry.getProviderByNamespace(keyNamespace).resolveString(name, locale);
         }
 
         return localeCache.getLocaledString(locale, key, () -> resolveString0(key, locale));
